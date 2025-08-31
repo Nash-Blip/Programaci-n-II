@@ -1,0 +1,93 @@
+@startuml practico
+
+class vehiculo{
+    - numMatricula: number
+    - estado: string
+    - tarifa: number
+    - kmDiario: number
+    - kilometro: number
+    - cargo: number
+    + setters_y_getters()
+}
+
+class calcularKilometraje{
+    - kmRetiro: number
+    - kmDevolucion: number
+    + calcularDiferencia(kmRetiro: number, kmDevolucion: number)
+    + calcularKilometrosPorDia()
+}
+
+class mantenimiento{
+
+}
+
+class reserva{
+    - fechaInicio: number
+    - fechaFin: number
+    - vehiculo: vehiculo
+    + calcularFecha(fechaInicio: number, fechaFin: number)
+}
+
+abstract class tarifa{
+    - fecha: reserva
+    - kilometro: calcularKilometraje
+    + abstract calculoTarifa(fecha: reserva, kilometro: number)
+}
+class tarifaCompacto extends tarifa{
+    - fecha: reserva
+    - kilometro: calcularKilometraje
+    fecha = calcularFecha()
+    + calculoTarifa(tarifa: number, kilometro: number)
+}
+class tarifaSedan extends tarifa{
+    - fecha: reserva
+    - kmDiario: number
+    - kilometro: calcularKilometraje
+    + calculoTarifa(fecha: reserva, kilometro: number)
+}
+class tarifaSUV extends tarifa{
+    - fecha: reserva
+    - kmDiario: number
+    - kilometro: calcularKilometraje
+    - seguroDia: number
+    + calculoTarifa(fecha: reserva, kilometro: number, kmDiario: number)
+}
+
+
+class compacto extends vehiculo{
+    'tarifa 30 al dia
+}
+
+class sedan extends vehiculo{
+    'tarifa 50 al dia
+}
+    
+
+class suv extends vehiculo{
+    'tarifa 80 al dia
+}
+
+vehiculo *-u- mantenimiento
+vehiculo *-d- tarifa
+tarifa o-d- reserva
+
+note right of calcularKilometraje::calcularDiferencia
+    const diferencia;
+    const kilometros =  calcularDiferencia();
+    if(calcularDiferencia > kmDiario){
+        diferencia += cargo * kilometros;
+    }
+
+end note
+
+note left of tarifa::calculoTarifa
+compacto:
+    const base = 30 * dias;
+Sedan:
+    exceso = 0.25 * kilometro;
+    const base = (50 * dias) + exceso;
+    
+SUV:
+    const base = 95 * dias;
+end note
+@enduml
