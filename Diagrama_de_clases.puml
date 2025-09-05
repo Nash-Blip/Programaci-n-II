@@ -1,86 +1,90 @@
 @startuml practico
 
-class vehiculo{
-    - numMatricula: number
-    - estado: string
-    - tarifa: number
+class GestionAlquiler{
+    - vehiculo[]: Vehiculo
+    - fechaReserva[]: Cliente
     - kmDiario: number
     - kilometro: number
-    - cargo: number
     + setters_y_getters()
+    + calcularKilometraje()
+    + verificarVehiculo()
+    + verificarEstado()
+    + solicitarTarifa()
 }
 
-class calcularKilometraje{
-    - kmRetiro: number
-    - kmDevolucion: number
-    + calcularDiferencia(kmRetiro: number, kmDevolucion: number)
-    + calcularKilometrosPorDia()
+abstract class Estado{
+    - fechaInicio: string
+    - fechaFin: string
 }
 
-class mantenimiento{
-
+class Mantenimiento{
+    + fechaMantenimiento(fechaInicio: number, fechaFin: number)
 }
 
-class reserva{
+class Limpieza{
+    + fechaLimpieza(fechaInicio: number, fechaFin: number)
+}
+class Alquiler{
+    + fechaAlquiler(fechaInicio: number, fechaFin: number)
+}
+
+class Disponible{ 
+    + fechaDisponible(fechaInicio: number, fechaFin: number)
+}
+
+class Cliente{
     - fechaInicio: number
     - fechaFin: number
-    - vehiculo: vehiculo
-    + calcularFecha(fechaInicio: number, fechaFin: number)
+    - vehiculo: Vehiculo
+    + reserva(fechaInicio: number, fechaFin: number, vehiculo: Vehiculo)
 }
 
-abstract class tarifa{
-    - fecha: reserva
-    - kilometro: calcularKilometraje
-    + abstract calculoTarifa(fecha: reserva, kilometro: number)
-}
-class tarifaCompacto extends tarifa{
-    - fecha: reserva
-    - kilometro: calcularKilometraje
-    fecha = calcularFecha()
-    + calculoTarifa(tarifa: number, kilometro: number)
-}
-class tarifaSedan extends tarifa{
-    - fecha: reserva
-    - kmDiario: number
-    - kilometro: calcularKilometraje
-    + calculoTarifa(fecha: reserva, kilometro: number)
-}
-class tarifaSUV extends tarifa{
-    - fecha: reserva
-    - kmDiario: number
-    - kilometro: calcularKilometraje
-    - seguroDia: number
-    + calculoTarifa(fecha: reserva, kilometro: number, kmDiario: number)
+abstract class Vehiculo{
+    - numMatricula: number
+    - marcaAuto: string
+    - kilometro: number
 }
 
+class Compacto extends Vehiculo{
 
-class compacto extends vehiculo{
-    'tarifa 30 al dia
 }
 
-class sedan extends vehiculo{
-    'tarifa 50 al dia
-}
-    
+class Sedan extends Vehiculo{
 
-class suv extends vehiculo{
-    'tarifa 80 al dia
 }
 
-vehiculo *-u- mantenimiento
-vehiculo *-d- tarifa
-tarifa o-d- reserva
+class SUV extends Vehiculo{
 
-note right of calcularKilometraje::calcularDiferencia
-    const diferencia;
-    const kilometros =  calcularDiferencia();
-    if(calcularDiferencia > kmDiario){
-        diferencia += cargo * kilometros;
-    }
+}
 
-end note
+abstract class Tarifa{
+    - tarifaBase: number
+    - kilometrajeInicial: number
+    - kilometrajeFinal: number
+    - kmDia[]: number
+    + calcularTarifa()
+}
 
-note left of tarifa::calculoTarifa
+class TarifaCompacto extends Tarifa{
+
+}
+class TarifaSUV extends Tarifa{
+
+}
+class TarifaSedan extends Tarifa{
+
+}
+
+Vehiculo *-u- Estado
+GestionAlquiler *-r- Cliente
+GestionAlquiler *-l- Vehiculo
+GestionAlquiler *-d- Tarifa
+Estado <|-l- Mantenimiento
+Estado <|-l- Limpieza
+Estado <|-r- Disponible
+Estado <|-r- Alquiler
+
+note left of Vehiculo::calculoTarifa
 compacto:
     const base = 30 * dias;
 Sedan:
@@ -89,5 +93,11 @@ Sedan:
     
 SUV:
     const base = 95 * dias;
+end note
+note right of GestionAlquiler::vehiculo[]
+    marca
+    matricula
+    tarifa
+    estado
 end note
 @enduml
