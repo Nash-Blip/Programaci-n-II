@@ -27,6 +27,8 @@ class Reserva{
     - fin: string
     - cliente: Cliente
     - vehiculo: Vehiculo
+    - kminicial: number
+    - kmFinal: number
     + calcularCosto(): number
 }
 
