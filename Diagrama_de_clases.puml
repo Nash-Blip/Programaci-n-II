@@ -3,8 +3,8 @@
 class GestionAlquiler{
     - vehiculo[]: Vehiculo
     - reservas[]: Reserva
-    + crearReserva(cliente: Cliente, vehiculo: Vehiculo, inicio: string, fin: string): Reserva
-    + verificarDisponibilidad(vehiculo: Vehiculo, inicio: string, fin: string): boolean
+    + crearReserva(reserva: Reserva): Reserva
+    + verificarDisponibilidad(reserva: Reserva): boolean
     + calcularKilometraje(reserva: Reserva): number
     + solicitarTarifa(reserva: Reserva): number
 }
