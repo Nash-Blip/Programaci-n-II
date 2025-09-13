@@ -21,7 +21,7 @@ class Cliente{
     - nombre: string
     + pedirReserva(inicio: string, fin: string, gestion: GestionAlquiler): Reserva
 }
-'prueba de commit
+
 class Reserva{
     - inicio: string
     - fin: string
