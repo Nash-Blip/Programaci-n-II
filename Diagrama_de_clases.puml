@@ -29,7 +29,6 @@ class Reserva{
     - vehiculo: Vehiculo
     - kminicial: number
     - kmFinal: number
-    + calcularCosto(): number
 }
 
 abstract class Vehiculo{
