@@ -3,10 +3,11 @@
 class GestionAlquiler{
     - vehiculo[]: Vehiculo
     - reservas[]: Reserva
-    + crearReserva(reserva: Reserva): Reserva
+    + crearReserva(reserva: Reserva): void
     + verificarDisponibilidad(reserva: Reserva): boolean
     + calcularKilometraje(reserva: Reserva): number
     + solicitarTarifa(reserva: Reserva): number
+    + noHaySolapamiento(reserva: Reserva): boolean
 }
 
 enum EstadoVehiculo {
