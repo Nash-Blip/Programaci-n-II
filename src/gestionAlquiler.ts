@@ -35,15 +35,12 @@ export default class GestionAlquiler{
                 const existenteInicio = moment(existente.inicio, "YYYY-MM-DD");
                 const existenteFin = moment(existente.fin, "YYYY-MM-DD");
 
-                if(inicio.isBetween(existenteInicio, existenteFin, undefined, "[)")){
+                if(inicio.isBetween(existenteInicio, existenteFin, undefined, "[)") || 
+                fin.isBetween(existenteInicio, existenteFin, undefined, "(]") ||
+                inicio.isSameOrBefore(existenteInicio) && fin.isSameOrAfter(existenteFin)){
                     return false;
                 }
-                if(fin.isBetween(existenteInicio, existenteFin, undefined, "(]")){
-                    return false;
-                }
-                if(inicio.isSameOrBefore(existenteInicio) && fin.isSameOrAfter(existenteFin)){
-                    return false;
-                }
+                
             }   
         }
         return true;
