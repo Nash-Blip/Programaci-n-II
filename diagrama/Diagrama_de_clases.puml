@@ -20,7 +20,7 @@ enum EstadoVehiculo {
 class Cliente{
     - id: number
     - nombre: string
-    + pedirReserva(inicio: string, fin: string, gestion: GestionAlquiler): Reserva
+    + pedirReserva(inicio: string, fin: string, gestion: GestionAlquiler, vehiculo: Vehiculo): Reserva
 }
 
 class Reserva{
