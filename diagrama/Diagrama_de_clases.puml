@@ -6,7 +6,6 @@ class GestionAlquiler{
     + crearReserva(reserva: Reserva): void
     + verificarDisponibilidad(reserva: Reserva): boolean
     + calcularKilometraje(reserva: Reserva): number
-    + solicitarTarifa(reserva: Reserva): number
     + noHaySolapamiento(reserva: Reserva): boolean
 }
 
@@ -40,6 +39,7 @@ abstract class Vehiculo{
     - marcaAuto: string
     - kilometro: number
     - estado: EstadoVehiculo
+    + solicitarTarifa(r: Reserva): number
 }
 
 class Compacto extends Vehiculo

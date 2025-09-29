@@ -47,11 +47,7 @@ export default class GestionAlquiler{
     }
 
     public calcularKilometraje(r: Reserva): number{
-
-    }
-
-    public solicitarTarifar(r: Reserva): number{
-        return r.cal
+        return r.calcularKmTotales();
     }
 
 }
