@@ -1,6 +1,0 @@
-enum EstadoVehiculo{
-    DISPONIBLE,
-    EN_ALQUILER,
-    EN_MANTENIMIENTO,
-    NECESITA_LIMPIEZA
-}
