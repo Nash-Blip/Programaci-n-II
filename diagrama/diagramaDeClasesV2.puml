@@ -38,8 +38,8 @@ class Reserva{
 }
 
 class CalcularKilometros{
-    +promedioKmDiarios(dias: number, kilometros: number)
-    +calcularKmTotales(kmIniciales: number, kmFinales: number)
+    +promedioKmDiarios(dias: number): number
+    +calcularKmTotales(kmIniciales: number, kmFinales: number): number
 }
 
 enum EstadoVehiculo{
