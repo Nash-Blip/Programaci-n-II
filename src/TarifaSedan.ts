@@ -6,18 +6,12 @@ recorrido, sin límite diario.
 import { Tarifa } from "./Tarifa";
 import Reserva from "./Reserva";
 
-export default class TarifaSedan extends Tarifa{
+export default class TarifaSedan implements Tarifa{
 
-    constructor(){
-        super();
-        this.tarifaBase = 50
+    private tarifaBase = 50
+
+    public calcularTarifa(r: Reserva): number{
+        return r.calculadoraKilometros.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) * 0.2
     }
 
-    public calculoTarifa(r: Reserva): number{
-        return r.getKmTotales() * 0.2
-    }
-
-    calcularReserva(r: Reserva): number {
-        return this.getTarifaBase() + this.calculoTarifa(r)
-    }
 }
