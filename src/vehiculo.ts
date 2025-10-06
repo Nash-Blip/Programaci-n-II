@@ -1,8 +1,8 @@
-import { ESTADO_VEHICULO } from "./estado-vehiculo";
+import {EstadoVehiculo} from "./estadoVehiculo";
 
-export abstract class Vehiculo{
-    constructor(private numMatricula: number, private marcaAuto: string, private kilometro: number, private estado: ESTADO_VEHICULO){
-        this.estado = ESTADO_VEHICULO.DISPONIBLE;
+export default abstract class Vehiculo{
+    constructor(private numMatricula: number, private marcaAuto: string, private kilometro: number, private estado: EstadoVehiculo){
+        this.estado = EstadoVehiculo.DISPONIBLE;
     }
 
     public setNumMatricula(value: number): void{
@@ -27,22 +27,22 @@ export abstract class Vehiculo{
     }
 
     public setEstadoDisponible(): void{
-        this.estado = ESTADO_VEHICULO.DISPONIBLE;
+        this.estado = EstadoVehiculo.DISPONIBLE;
     }
 
     public setEstadoEnAlquiler(): void{
-        this.estado = ESTADO_VEHICULO.EN_ALQUILER;
+        this.estado = EstadoVehiculo.EN_ALQUILER;
     }
 
     public setEstadoEnMantenimiento(): void{
-        this.estado = ESTADO_VEHICULO.EN_MANTENIMIENTO;
+        this.estado = EstadoVehiculo.EN_MANTENIMIENTO;
     }
 
     public setEstadoNecesitaLimpieza(): void{
-        this.estado = ESTADO_VEHICULO.NECESITA_LIMPIEZA;
+        this.estado = EstadoVehiculo.NECESITA_LIMPIEZA;
     }
 
-    public getEstado(): ESTADO_VEHICULO {
+    public getEstado(): EstadoVehiculo {
         return this.estado;
     }
 }
