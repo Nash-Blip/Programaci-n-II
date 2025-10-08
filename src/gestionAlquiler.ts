@@ -3,11 +3,12 @@ import Reserva from "./reserva";
 import {EstadoVehiculo} from "./estadoVehiculo";
 import moment from "moment";
 import Disponibilidad from "./disponibilidad";
+import {Tarifa} from "./Tarifa";
 
 export default class GestionAlquiler{
 
     private vehiculos: Map<number, Vehiculo>;
-    private reservas: Map<number, Reserva>;
+    private reservas: Map<number, Reserva[]>;
     private verificadorDisponibilidad: Disponibilidad;
 
     constructor(){
@@ -15,7 +16,6 @@ export default class GestionAlquiler{
         this.reservas = new Map();
         this.verificadorDisponibilidad = new Disponibilidad();
     }
-
     
     public procesarReserva(r: Reserva): boolean{
         const vehiculo = this.vehiculos.get(r.vehiculo.numMatricula);
@@ -26,8 +26,7 @@ export default class GestionAlquiler{
         if(vehiculo.getEstado() !== EstadoVehiculo.DISPONIBLE){
             throw new Error("El vehiculo no esta disponible.");
         }
-        const reservasDelVehiculo = Array.from(this.reservas.values())
-        .filter(res => res.vehiculo.numMatricula === r.vehiculo.numMatricula);
+        const reservasDelVehiculo = this.reservas.get(r.vehiculo.numMatricula) ?? [];
         if(!this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo)){
             return false;
         }
@@ -36,11 +35,20 @@ export default class GestionAlquiler{
 
     public entregarVehiculo(r: Reserva): void{
         r.vehiculo.estado = EstadoVehiculo.EN_ALQUILER;
-        this.reservas.set(r.vehiculo.numMatricula, r);
+
+        const lista = this.reservas.get(r.vehiculo.numMatricula) ?? [];
+        lista.push(r);
+
+        this.reservas.set(r.vehiculo.numMatricula, lista);
         this.vehiculos.set(r.vehiculo.numMatricula, r.vehiculo);
     }
 
     public recibirVehiculo(r: Reserva): void{
+        r.vehiculo.estado = EstadoVehiculo.DISPONIBLE;
+        const precioFinal = r.calcularPrecioReserva();
 
+        console.log(`Precio total a pagar ${precioFinal}`);
+
+        this.vehiculos.set(r.vehiculo.numMatricula, r.vehiculo);
     }
 }
