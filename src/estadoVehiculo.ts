@@ -1,4 +1,4 @@
-enum EstadoVehiculo{
+export enum EstadoVehiculo{
     DISPONIBLE,
     EN_ALQUILER,
     EN_MANTENIMIENTO,
