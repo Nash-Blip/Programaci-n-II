@@ -16,6 +16,15 @@ export default class GestionAlquiler{
         this.reservas = new Map();
         this.verificadorDisponibilidad = new Disponibilidad();
     }
+
+    public getVehiculos(): Map<number, Vehiculo> {
+        return this.vehiculos;
+    }
+
+    public getReservas(): Map<number, Reserva[]> {
+        return this.reservas;
+    }
+
     
     public procesarReserva(r: Reserva): boolean{
         const vehiculo = this.vehiculos.get(r.vehiculo.numMatricula);
@@ -34,7 +43,7 @@ export default class GestionAlquiler{
     }
 
     public entregarVehiculo(r: Reserva): void{
-        r.vehiculo.estado = EstadoVehiculo.EN_ALQUILER;
+        r.vehiculo.setEstadoEnAlquiler();
 
         const lista = this.reservas.get(r.vehiculo.numMatricula) ?? [];
         lista.push(r);
@@ -44,7 +53,7 @@ export default class GestionAlquiler{
     }
 
     public recibirVehiculo(r: Reserva): void{
-        r.vehiculo.estado = EstadoVehiculo.DISPONIBLE;
+        r.vehiculo.setEstadoDisponible();
         const precioFinal = r.calcularPrecioReserva();
 
         console.log(`Precio total a pagar ${precioFinal}`);
