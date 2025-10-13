@@ -4,8 +4,8 @@ recorrido, sin límite diario.
 */
 
 import { Tarifa } from "./Tarifa";
-import Reserva from "./Reserva";
 import CalcularKilometros from "./CalcularKilometros";
+import Reserva from "./Reserva";
 
 export default class TarifaSedan implements Tarifa{
     private tarifaBase = 50

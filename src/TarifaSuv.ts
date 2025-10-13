@@ -5,8 +5,8 @@ los 500km en total durante el período de alquiler.
 */
 
 import { Tarifa } from "./Tarifa";
-import Reserva from "./Reserva";
 import CalcularKilometros from "./CalcularKilometros";
+import Reserva from "./Reserva";
 
 export default class TarifaSuv implements Tarifa{
     private tarifaBase = 80
