@@ -13,12 +13,12 @@ export default class TarifaSuv implements Tarifa{
     private precioSeguro = 15
     calcularKm: CalcularKilometros = new CalcularKilometros();
 
-    private superaronKm(r: Reserva): boolean{
-        return this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) > 500
+    public calcularTarifa(r: Reserva): number{
+        return (this.tarifaBase * r.calcularCantidadDias()) + this.calcularSeguro(r) + this.cargoAdicional(r)
     }
 
-    public calcularTarifa(r: Reserva): number{
-        return this.tarifaBase + this.calcularSeguro(r) + this.cargoAdicional(r)
+    private superaronKm(r: Reserva): boolean{
+        return this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) > 500
     }
 
     private calcularSeguro(r: Reserva): number{

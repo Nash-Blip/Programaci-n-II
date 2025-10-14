@@ -12,7 +12,7 @@ export default class TarifaSedan implements Tarifa{
     calcularKm: CalcularKilometros = new CalcularKilometros();
 
     public calcularTarifa(r: Reserva): number{
-        return this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) * 0.2
+        return (this.tarifaBase * r.calcularCantidadDias()) + this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) * 0.2
     }
 
 }
