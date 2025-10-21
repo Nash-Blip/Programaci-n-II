@@ -38,7 +38,7 @@ class Reserva{
 }
 
 class CalcularKilometros{
-    +promedioKmDiarios(dias: number): number
+    +promedioKmDiarios(Kmtotales: number, dias: number): number
     +calcularKmTotales(kmIniciales: number, kmFinales: number): number
 }
 
