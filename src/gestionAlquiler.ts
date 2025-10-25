@@ -24,7 +24,6 @@ export default class GestionAlquiler{
     public getReservas(): Map<number, Reserva[]> {
         return this.reservas;
     }
-
     
     public procesarReserva(r: Reserva): boolean{
         const vehiculo = this.vehiculos.get(r.vehiculo.numMatricula);
