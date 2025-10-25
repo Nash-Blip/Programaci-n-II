@@ -4,33 +4,24 @@ recorrido si se superan los 100 km por día de alquiler.
 */
 
 import { Tarifa } from "./Tarifa";
+import CalcularKilometros from "./CalcularKilometros";
 import Reserva from "./Reserva";
 
-export default class TarifaCompacto extends Tarifa{
+export default class TarifaCompacto implements Tarifa{
+    private tarifaBase = 30
+    calcularKm: CalcularKilometros = new CalcularKilometros();
 
-    constructor(){
-        super();
-        this.tarifaBase = 30
+    public calcularTarifa(r: Reserva): number {
+        return (this.tarifaBase * r.calcularCantidadDias()) + this.cargoAdicional(r)
     }
 
-    public superoKmDiarios(r: Reserva): boolean{
-        return r.getKmDiarios() > 100
-        
-    }
-
-    public calculoTarifa(r: Reserva): number{
-        if(this.superoKmDiarios(r)){
-            return r.getKmTotales() * 0.15
+    private cargoAdicional(r: Reserva): number{
+        if(this.calcularKm.promedioKmDiarios(r.calcularCantidadDias()) > 100){
+            return 0.15 * this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales())
         }else{
             return 0
         }
-        
     }
-
-    public calcularReserva(r: Reserva): number {
-        return this.tarifaBase + this.calculoTarifa(r)
-    }
-
 
     
 }
