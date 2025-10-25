@@ -1,6 +1,6 @@
 import Disponibilidad from "../src/disponibilidad";
 
-const res = (y: number, m: number, d: number) => new Date(y, m - 1, d);
+const res = (y: number, m: number, d: number) => new Date(y, m, d);
 const reservaLike = (ini: Date, fin: Date) => ({
   getFechaInicio: () => ini,
   getFechaFinalizacion: () => fin,
@@ -69,7 +69,7 @@ describe("Disponibilidad", () => {
   test("devuelve false si una de varias existentes solapa", () => {
     const r1   = reservaLike(res(2025,10,1),  res(2025,10,5));
     const r2   = reservaLike(res(2025,10,10), res(2025,10,15));
-    const nueva= reservaLike(res(2025,10,12), res(2025,10,18)); // solapa con r2
+    const nueva= reservaLike(res(2025,10,12), res(2025,10,18));
     expect(disp.estaDisponible(nueva as any, [r1 as any, r2 as any])).toBe(false);
   });
 });
