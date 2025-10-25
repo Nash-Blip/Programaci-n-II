@@ -1,0 +1,107 @@
+@startuml name prototipoTP
+
+abstract class Vehiculo{
+    - numMatricula: number
+    - estado: EstadoVehiculo
+    - kilometros: number
+    - logicaTarifa: Tarifa
+    - kmUltimoMantenimiento: number
+    - fechaUltimoMantenimiento: Date 
+    - alquileresCantidad: number
+    - tarifaBase: number
+
+    --Getters_Y_Setters--
+}
+
+class Sedan extends Vehiculo{}
+class Suv extends Vehiculo{}
+class Compacto extends Vehiculo{}
+
+class Temporada{
+    - nombre: string 
+    - porcentajeAjuste: number
+
+    + Getters_Y_Setters
+    + ajustarTarifa(tarifaBase: number): number 
+}
+'aca con cada tarifa base por auto se sacaria el precio que da segun la temporada
+class Mantenimiento{
+    - costo: number
+    - fecha: Date 
+    - vehicuo: Vehiculo
+
+    + Getters_Y_Setters
+    - registroMantenimiento(): void
+}
+
+interface Tarifa{
+    calcularKm: CalcularKilometros
+    calcularTarifa(reserva: Reserva): number
+}
+
+class tarifaSuv implements Tarifa{}
+
+class tarifaCompacto implements Tarifa{}
+
+class tarifaSedan implements Tarifa{}
+
+class Reserva{
+    -idReserva: number
+    -fechaInicio: Fecha
+    -fechaFinalizacion: Fecha
+    -vehiculo: Vehiculo
+    -kmIniciales: number
+    -kmFinales: number
+
+    --Getters_Y_Setters--
+    +calcularCantidadDias(): number
+    +calcularPrecioReserva(): number
+}
+
+class CalcularKilometros{
+    +promedioKmDiarios(dias: number): number
+    +calcularKmTotales(kmIniciales: number, kmFinales: number): number
+}
+
+enum EstadoVehiculo{
+    EN_MANTENIMIENTO,
+    DISPONIBLE,
+    EN_ALQUILER,
+    NECESITA_LIMPIEZA,
+}
+'En el nuevo enunciado no dice nada de la limpieza, en sentido de que si le hace 
+'falta limpieza no se puede alquilar,
+'tendriamos que preguntar si se deja o directamente se puede alquilar aunque le falte lipieza(? 
+'o hay que tirar un error como en mantenimiento
+class GestionAlquiler{
+    -vehiculos: Map<matricula: number, vehiculo>
+    -reservas: Map<idReserva: number,Reserva>
+    -verificadorDisponibulidad: Disponibilidad
+
+    --Getters_Y_Setters--
+    +procesarReserva(reserva: Reserva): boolean
+    +entregarVehiculo(reserva: Reserva): void
+    +recibirVehiculo(reserva: Reserva): void
+}
+
+class Disponibilidad{
+    +estaDisponible(reserva: Reserva, Reserva[]): boolean
+}
+
+class Estadistica{
+    + vehiculoMasAlquilado(): Vehiculo
+    + vehiculoMenosAlquilado(): Vehiculo
+    + rentabilidad
+    + ocupacioFlota(): number
+}
+
+
+' Relaciones
+Vehiculo *-- Tarifa
+GestionAlquiler *-- Vehiculo
+Disponibilidad *-- Reserva
+Reserva *-- CalcularKilometros
+GestionAlquiler *-- Disponibilidad
+GestionAlquiler <-- Reserva
+
+@enduml
