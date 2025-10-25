@@ -31,7 +31,7 @@ jest.mock("../src/Reserva", () => {
   };
 });
 
-const d = (y: number, m: number, day: number) => new Date(y, m - 1, day);
+const d = (y: number, m: number, day: number) => new Date(y, m, day);
 
 describe("GestionAlquiler (mock de Reserva y Disponibilidad)", () => {
   let gestion: GestionAlquiler;
