@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-import { ESTADO_VEHICULO } from "./estado-vehiculo";
+import {EstadoVehiculo} from "./estadoVehiculo";
 import { Tarifa } from "./Tarifa";
 
-export abstract class Vehiculo{
-    constructor(private numMatricula: number, private kilometro: number, private estado: ESTADO_VEHICULO, private logicaTarifa: Tarifa){
-        this.estado = ESTADO_VEHICULO.DISPONIBLE;
-=======
-import {EstadoVehiculo} from "./estadoVehiculo";
-
 export default abstract class Vehiculo{
-    constructor(private numMatricula: number, private marcaAuto: string, private kilometro: number, private estado: EstadoVehiculo){
+    constructor(private numMatricula: number, private estado: EstadoVehiculo, private datosMantenimiento: DatosMantenimiento, private datosEstadistica: DatosEstadistica, private kilometro: number, private logicaTarifa: Tarifa, private tarifaBase: number){
         this.estado = EstadoVehiculo.DISPONIBLE;
->>>>>>> Branch_DiagramaEnu2
     }
 
     public setNumMatricula(value: number): void{
@@ -48,5 +40,9 @@ export default abstract class Vehiculo{
         return this.estado;
     }
 
-    public calcularTarfia(){}
+    public setTarifaBase(): void {}
+    
+    public getTarifaBase(): number {
+        return this.tarifaBase;
+    }
 }
