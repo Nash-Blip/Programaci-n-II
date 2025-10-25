@@ -4,11 +4,11 @@ import moment from "moment";
 export default class Disponibilidad {
   public estaDisponible(r: Reserva, reservasExistentes: Reserva[]): boolean {
     const inicio = moment(r.getFechaInicio());
-    const fin    = moment(r.getFechaFinalizacion());
+    const fin = moment(r.getFechaFinalizacion());
 
     for (const existente of reservasExistentes) {
       const existenteInicio = moment(existente.getFechaInicio());
-      const existenteFin    = moment(existente.getFechaFinalizacion());
+      const existenteFin = moment(existente.getFechaFinalizacion());
 
       if (
         inicio.isBetween(existenteInicio, existenteFin, undefined, "[)") ||
