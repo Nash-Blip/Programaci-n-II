@@ -1,9 +1,7 @@
 import Vehiculo from "./vehiculo";
 import Reserva from "./Reserva";
 import {EstadoVehiculo} from "./estadoVehiculo";
-import moment from "moment";
 import Disponibilidad from "./disponibilidad";
-import {Tarifa} from "./Tarifa";
 
 export default class GestionAlquiler{
 
@@ -26,7 +24,7 @@ export default class GestionAlquiler{
     }
     
     public procesarReserva(r: Reserva): boolean{
-        const vehiculo = this.vehiculos.get(r.vehiculo.numMatricula);
+        const vehiculo = this.vehiculos.get(r.getVehiculo().getNumMatricula());
 
         if(!vehiculo){
             throw new Error("Vehiculo no encontrado.");
@@ -34,7 +32,7 @@ export default class GestionAlquiler{
         if(vehiculo.getEstado() !== EstadoVehiculo.DISPONIBLE){
             throw new Error("El vehiculo no esta disponible.");
         }
-        const reservasDelVehiculo = this.reservas.get(r.vehiculo.numMatricula) ?? [];
+        const reservasDelVehiculo = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         if(!this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo)){
             return false;
         }
@@ -42,21 +40,21 @@ export default class GestionAlquiler{
     }
 
     public entregarVehiculo(r: Reserva): void{
-        r.vehiculo.setEstadoEnAlquiler();
+        r.getVehiculo().setEstadoEnAlquiler();
 
-        const lista = this.reservas.get(r.vehiculo.numMatricula) ?? [];
+        const lista = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         lista.push(r);
 
-        this.reservas.set(r.vehiculo.numMatricula, lista);
-        this.vehiculos.set(r.vehiculo.numMatricula, r.vehiculo);
+        this.reservas.set(r.getVehiculo().getNumMatricula(), lista);
+        this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
     }
 
     public recibirVehiculo(r: Reserva): void{
-        r.vehiculo.setEstadoDisponible();
+        r.getVehiculo().setEstadoDisponible();
         const precioFinal = r.calcularPrecioReserva();
 
         console.log(`Precio total a pagar ${precioFinal}`);
 
-        this.vehiculos.set(r.vehiculo.numMatricula, r.vehiculo);
+        this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
     }
 }
