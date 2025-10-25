@@ -1,4 +1,4 @@
-import Reserva from "./reserva";
+import Reserva from "./Reserva";
 import moment from "moment";
 
 export default class Disponibilidad{    

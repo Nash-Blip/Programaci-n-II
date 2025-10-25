@@ -14,6 +14,7 @@ class Suv extends Vehiculo{}
 class Compacto extends Vehiculo{}
 
 interface Tarifa{
+    calcularKm: CalcularKilometros
     calcularTarifa(reserva: Reserva): number
 }
 
@@ -30,7 +31,6 @@ class Reserva{
     -vehiculo: Vehiculo
     -kmIniciales: number
     -kmFinales: number
-    -calculadoraKilometros: CalcularKilometros
 
     --Getters_Y_Setters--
     +calcularCantidadDias(): number
@@ -38,8 +38,8 @@ class Reserva{
 }
 
 class CalcularKilometros{
-    +promedioKmDiarios(dias: number, kilometros: number)
-    +calcularKmTotales(kmIniciales: number, kmFinales: number)
+    +promedioKmDiarios(dias: number): number
+    +calcularKmTotales(kmIniciales: number, kmFinales: number): number
 }
 
 enum EstadoVehiculo{

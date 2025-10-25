@@ -1,5 +1,5 @@
 import Vehiculo from "./vehiculo";
-import Reserva from "./reserva";
+import Reserva from "./Reserva";
 import {EstadoVehiculo} from "./estadoVehiculo";
 import moment from "moment";
 import Disponibilidad from "./disponibilidad";

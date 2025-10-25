@@ -5,33 +5,32 @@ los 500km en total durante el período de alquiler.
 */
 
 import { Tarifa } from "./Tarifa";
+import CalcularKilometros from "./CalcularKilometros";
 import Reserva from "./Reserva";
 
-export default class TarifaSuv extends Tarifa{
-    
-    constructor(){
+export default class TarifaSuv implements Tarifa{
+    private tarifaBase = 80
+    private precioSeguro = 15
+    calcularKm: CalcularKilometros = new CalcularKilometros();
 
-        super()
-        this.tarifaBase = 80
+    public calcularTarifa(r: Reserva): number{
+        return (this.tarifaBase * r.calcularCantidadDias()) + this.calcularSeguro(r) + this.cargoAdicional(r)
     }
 
-    public superaronKm(r: Reserva): boolean{
-        return r.getKmTotales() > 500
+    private superaronKm(r: Reserva): boolean{
+        return this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) > 500
     }
 
-    public calculoTarifa(r: Reserva): number{
+    private calcularSeguro(r: Reserva): number{
+        return r.calcularCantidadDias() * this.precioSeguro
+    }
+
+    private cargoAdicional(r: Reserva): number{
         if(this.superaronKm(r)){
-            return r.getKmTotales() * 0.25
+            return this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) * 0.25
         }else{
             return 0
         }
     }
 
-    public calcularSeguro(r: Reserva): number{
-        return r.calcularCantidadDias() * 15
-    }
-
-    calcularReserva(r: Reserva): number {
-        return this.getTarifaBase() + this.calculoTarifa(r) + this.calcularSeguro(r)
-    }
 }
