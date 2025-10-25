@@ -55,30 +55,30 @@ describe("GestionAlquiler (mock de Reserva y Disponibilidad)", () => {
     gestion.getVehiculos().set(vehiculo.getNumMatricula(), vehiculo);
   });
 
-  test("procesarReserva → true cuando disponibilidad = true", () => {
+  test("procesarReserva devuelve true cuando disponibilidad es true", () => {
     estaDisponibleMock.mockReturnValue(true);
     expect(gestion.procesarReserva(reserva)).toBe(true);
     expect(estaDisponibleMock).toHaveBeenCalled();
   });
 
-  test("procesarReserva → lanza si vehículo no existe", () => {
+  test("procesarReserva lanza error si el vehículo no existe", () => {
     const g2 = new GestionAlquiler();
     estaDisponibleMock.mockReturnValue(true);
     expect(() => g2.procesarReserva(reserva)).toThrow("Vehiculo no encontrado.");
   });
 
-  test("procesarReserva → lanza si vehículo no está disponible", () => {
+  test("procesarReserva lanza error si el vehículo no está disponible", () => {
     vehiculo.setEstadoEnAlquiler();
     expect(() => gestion.procesarReserva(reserva)).toThrow("El vehiculo no esta disponible.");
     expect(estaDisponibleMock).not.toHaveBeenCalled();
   });
 
-  test("procesarReserva → false cuando disponibilidad = false", () => {
+  test("procesarReserva devuelve false cuando disponibilidad es false", () => {
     estaDisponibleMock.mockReturnValue(false);
     expect(gestion.procesarReserva(reserva)).toBe(false);
   });
 
-  test("entregarVehiculo → agrega reserva y cambia estado a EN_ALQUILER", () => {
+  test("entregarVehiculo agrega una reserva y cambia el estado a EN_ALQUILER", () => {
     gestion.entregarVehiculo(reserva);
 
     const reservas = gestion.getReservas().get(vehiculo.getNumMatricula());
@@ -89,7 +89,7 @@ describe("GestionAlquiler (mock de Reserva y Disponibilidad)", () => {
     expect(v?.getEstado()).toBe(EstadoVehiculo.EN_ALQUILER);
   });
 
-  test("recibirVehiculo → marca DISPONIBLE y calcula precio", () => {
+  test("recibirVehiculo lo marca DISPONIBLE y calcula el precio", () => {
     calcularPrecioReservaMock.mockReturnValue(1500);
 
     gestion.recibirVehiculo(reserva);
