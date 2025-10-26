@@ -6,7 +6,7 @@ export default class Reserva{
     private fechaFinalizacion: Date;
     private vehiculo: Vehiculo;
     private kmIniciales: number
-    private kmFinales: number 
+    private kmFinales: number
     private calcularKilometros = CalcularKilometros;
 
     constructor(idReserva: number,

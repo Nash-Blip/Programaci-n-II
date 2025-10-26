@@ -33,10 +33,8 @@ export default class GestionAlquiler{
             throw new Error("El vehiculo no esta disponible.");
         }
         const reservasDelVehiculo = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
-        if(!this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo)){
-            return false;
-        }
-        return true;
+        
+        return this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo);
     }
 
     public entregarVehiculo(r: Reserva): void{
@@ -49,12 +47,10 @@ export default class GestionAlquiler{
         this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
     }
 
-    public recibirVehiculo(r: Reserva): void{
+    public recibirVehiculo(r: Reserva): number{
         r.getVehiculo().setEstadoDisponible();
         const precioFinal = r.calcularPrecioReserva();
-
-        console.log(`Precio total a pagar ${precioFinal}`);
-
         this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
+        return precioFinal;
     }
 }
