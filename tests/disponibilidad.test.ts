@@ -29,13 +29,13 @@ describe("Disponibilidad", () => {
     expect(disp.estaDisponible(nueva, [existente])).toBe(true);
   });
 
-  test("devuelve false si se solapa al inicio", () => {
+  test("devuelve false si la existente se solapa con el inicio de la nueva", () => {
     const existente = reservaMock(res(2025, 11, 5),  res(2025, 11, 10));
     const nueva     = reservaMock(res(2025, 11, 8),  res(2025, 11, 12));
     expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
-  test("devuelve false si se solapa al final", () => {
+  test("devuelve false si la existente se solapa al final de la nueva", () => {
     const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
     const nueva     = reservaMock(res(2025, 11, 5),  res(2025, 11, 12));
     expect(disp.estaDisponible(nueva, [existente])).toBe(false);
@@ -47,25 +47,25 @@ describe("Disponibilidad", () => {
     expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
-  test("devuelve false si nueva.inicio == existente.inicio", () => {
+  test("devuelve false si el inicio de la nueva es igual a la existente", () => {
     const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
     const nueva     = reservaMock(res(2025, 11, 10), res(2025, 11, 12));
     expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
-  test("devuelve false si nueva.fin == existente.fin", () => {
+  test("devuelve false si el fin de la nueva es igual a la existente", () => {
     const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
     const nueva     = reservaMock(res(2025, 11, 12), res(2025, 11, 15));
     expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
-  test("devuelve true si nueva.fin == existente.inicio (adyacentes)", () => {
+  test("devuelve true si el final de la nueva es igual al inicio de la existente", () => {
     const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
     const nueva     = reservaMock(res(2025, 11, 5),  res(2025, 11, 10));
     expect(disp.estaDisponible(nueva, [existente])).toBe(true);
   });
 
-  test("devuelve true si nueva.inicio == existente.fin (adyacentes)", () => {
+  test("devuelve true si el inicio de la nueva es igual al final de la existente", () => {
     const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
     const nueva     = reservaMock(res(2025, 11, 15), res(2025, 11, 20));
     expect(disp.estaDisponible(nueva, [existente])).toBe(true);
