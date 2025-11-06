@@ -1,10 +1,15 @@
 import Disponibilidad from "../src/disponibilidad";
+import type Reserva from "../src/Reserva";
+import { mock } from "jest-mock-extended";
 
 const res = (y: number, m: number, d: number) => new Date(y, m, d);
-const reservaLike = (ini: Date, fin: Date) => ({
-  getFechaInicio: () => ini,
-  getFechaFinalizacion: () => fin,
-});
+
+const reservaMock = (ini: Date, fin: Date) => {
+  const r = mock<Reserva>();
+  r.getFechaInicio.mockReturnValue(ini);
+  r.getFechaFinalizacion.mockReturnValue(fin);
+  return r;
+};
 
 describe("Disponibilidad", () => {
   let disp: Disponibilidad;
@@ -14,62 +19,62 @@ describe("Disponibilidad", () => {
   });
 
   test("devuelve true si no hay reservas existentes", () => {
-    const nueva = reservaLike(res(2025,10,10), res(2025,10,12));
-    expect(disp.estaDisponible(nueva as any, [])).toBe(true);
+    const nueva = reservaMock(res(2025, 11, 10), res(2025, 11, 12));
+    expect(disp.estaDisponible(nueva, [])).toBe(true);
   });
 
   test("devuelve true si no se solapan", () => {
-    const existente = reservaLike(res(2025,10,1), res(2025,10,5));
-    const nueva     = reservaLike(res(2025,10,10), res(2025,10,15));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(true);
+    const existente = reservaMock(res(2025, 11, 1), res(2025, 11, 5));
+    const nueva     = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(true);
   });
 
   test("devuelve false si se solapa al inicio", () => {
-    const existente = reservaLike(res(2025,10,5), res(2025,10,10));
-    const nueva     = reservaLike(res(2025,10,8), res(2025,10,12));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(false);
+    const existente = reservaMock(res(2025, 11, 5),  res(2025, 11, 10));
+    const nueva     = reservaMock(res(2025, 11, 8),  res(2025, 11, 12));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
-  test("devuelve false si solapa al final", () => {
-    const existente = reservaLike(res(2025,10,10), res(2025,10,15));
-    const nueva     = reservaLike(res(2025,10,5),  res(2025,10,12));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(false);
+  test("devuelve false si se solapa al final", () => {
+    const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
+    const nueva     = reservaMock(res(2025, 11, 5),  res(2025, 11, 12));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
   test("devuelve false si la nueva contiene por completo a la existente", () => {
-    const existente = reservaLike(res(2025,10,10), res(2025,10,12));
-    const nueva     = reservaLike(res(2025,10,9),  res(2025,10,13));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(false);
+    const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 12));
+    const nueva     = reservaMock(res(2025, 11, 9),  res(2025, 11, 13));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
   test("devuelve false si nueva.inicio == existente.inicio", () => {
-    const existente = reservaLike(res(2025,10,10), res(2025,10,15));
-    const nueva     = reservaLike(res(2025,10,10), res(2025,10,12));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(false);
+    const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
+    const nueva     = reservaMock(res(2025, 11, 10), res(2025, 11, 12));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
   test("devuelve false si nueva.fin == existente.fin", () => {
-    const existente = reservaLike(res(2025,10,10), res(2025,10,15));
-    const nueva     = reservaLike(res(2025,10,12), res(2025,10,15));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(false);
+    const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
+    const nueva     = reservaMock(res(2025, 11, 12), res(2025, 11, 15));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(false);
   });
 
-  test("devuelve true si nueva.fin == existente.inicio", () => {
-    const existente = reservaLike(res(2025,10,10), res(2025,10,15));
-    const nueva     = reservaLike(res(2025,10,5),  res(2025,10,10));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(true);
+  test("devuelve true si nueva.fin == existente.inicio (adyacentes)", () => {
+    const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
+    const nueva     = reservaMock(res(2025, 11, 5),  res(2025, 11, 10));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(true);
   });
 
-  test("devuelve true si nueva.inicio == existente.fin", () => {
-    const existente = reservaLike(res(2025,10,10), res(2025,10,15));
-    const nueva     = reservaLike(res(2025,10,15), res(2025,10,20));
-    expect(disp.estaDisponible(nueva as any, [existente as any])).toBe(true);
+  test("devuelve true si nueva.inicio == existente.fin (adyacentes)", () => {
+    const existente = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
+    const nueva     = reservaMock(res(2025, 11, 15), res(2025, 11, 20));
+    expect(disp.estaDisponible(nueva, [existente])).toBe(true);
   });
 
-  test("devuelve false si una de varias existentes solapa", () => {
-    const r1   = reservaLike(res(2025,10,1),  res(2025,10,5));
-    const r2   = reservaLike(res(2025,10,10), res(2025,10,15));
-    const nueva= reservaLike(res(2025,10,12), res(2025,10,18));
-    expect(disp.estaDisponible(nueva as any, [r1 as any, r2 as any])).toBe(false);
+  test("devuelve false si una de varias existentes se solapa", () => {
+    const r1    = reservaMock(res(2025, 11, 1),  res(2025, 11, 5));
+    const r2    = reservaMock(res(2025, 11, 10), res(2025, 11, 15));
+    const nueva = reservaMock(res(2025, 11, 12), res(2025, 11, 18));
+    expect(disp.estaDisponible(nueva, [r1, r2])).toBe(false);
   });
 });
