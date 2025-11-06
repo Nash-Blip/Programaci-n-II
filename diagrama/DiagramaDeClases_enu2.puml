@@ -47,6 +47,7 @@ class DatosMantenimiento{
 interface Tarifa{
     calcularKm: CalcularKilometros
     calcularTarifa(reserva: Reserva): number
+    getTemporada: Temporada
 }
 
 class tarifaSuv implements Tarifa{}
@@ -87,23 +88,22 @@ class GestionAlquiler{
     -controladorDeEstadisticas: Estadistica
 
     --Getters_Y_Setters--
-    -procesarMantenimiento(vehiculo: Vehiculo): boolean
     +procesarReserva(reserva: Reserva): boolean
     +entregarVehiculo(reserva: Reserva): void
     +recibirVehiculo(reserva: Reserva): void
 }
 
 class Disponibilidad{
+    -procesarMantenimiento(vehiculo: Vehiculo): boolean
     +estaDisponible(reserva: Reserva, Reserva[]): boolean
 }
 
 class Estadistica{
-    -vehiculos: Map<Vehiculo>
-    + vehiculoMasAlquilado(): Vehiculo
-    + menosRentabilidad(): Vehiculo
-    + mayorRentabilidad(): Vehiculo
-    + cantidadEnAlquiler(): number
-    + generarReporte(): void
+    + vehiculoMasAlquilado(vehiculos: Map<Vehiculo>): Vehiculo
+    + menosRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
+    + mayorRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
+    + cantidadEnAlquiler(vehiculos: Map<Vehiculo>): number
+    + generarReporte(vehiculos: Map<Vehiculo>): void
 }
 
 
@@ -114,7 +114,10 @@ Disponibilidad *-- Reserva
 Reserva *-- CalcularKilometros
 GestionAlquiler *-- Disponibilidad
 GestionAlquiler <-- Reserva
-Vehiculo *-u- datosEstadistica
-Vehiculo *-l- datosMantenimiento
+Vehiculo *-u- DatosEstadistica
+Vehiculo *-l- DatosMantenimiento
+GestionAlquiler <-- Estadistica
+Tarifa *-- Temporada
+Vehiculo *-- Mantenimiento
 
 @enduml
