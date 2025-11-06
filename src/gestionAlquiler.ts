@@ -1,60 +1,56 @@
 import Vehiculo from "./vehiculo";
-import Reserva from "./reserva";
-import EstadoVehiculo from "./estadoVehiculo";
-import moment from "moment";
+import Reserva from "./Reserva";
+import {EstadoVehiculo} from "./estadoVehiculo";
+import Disponibilidad from "./disponibilidad";
 
 export default class GestionAlquiler{
-    private vehiculo: Array<Vehiculo>;
-    private reservas: Array<Reserva>;
+
+    private vehiculos: Map<number, Vehiculo>;
+    private reservas: Map<number, Reserva[]>;
+    private verificadorDisponibilidad: Disponibilidad;
 
     constructor(){
-        this.vehiculo = [];
-        this.reservas = [];
+        this.vehiculos = new Map();
+        this.reservas = new Map();
+        this.verificadorDisponibilidad = new Disponibilidad();
     }
 
-    public crearReserva(r: Reserva): void{
-        if(this.verificarDisponibilidad(r)){
-            this.reservas.push(r);
+    public getVehiculos(): Map<number, Vehiculo> {
+        return this.vehiculos;
+    }
+
+    public getReservas(): Map<number, Reserva[]> {
+        return this.reservas;
+    }
+    
+    public procesarReserva(r: Reserva): boolean{
+        const vehiculo = this.vehiculos.get(r.getVehiculo().getNumMatricula());
+
+        if(!vehiculo){
+            throw new Error("Vehiculo no encontrado.");
         }
-    }
-
-    public verificarDisponibilidad(r: Reserva): boolean{
-        if(r.vehiculo.estado !== EstadoVehiculo.DISPONIBLE){
-            return false;
-        }else{
-            return this.noHaySolapamiento(r);
+        if(vehiculo.getEstado() !== EstadoVehiculo.DISPONIBLE){
+            throw new Error("El vehiculo no esta disponible.");
         }
+        const reservasDelVehiculo = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
+        
+        return this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo);
     }
 
-    public noHaySolapamiento(r: Reserva): boolean{
-        for(const existente of this.reservas){
-            if(existente.vehiculo === r.vehiculo){
+    public entregarVehiculo(r: Reserva): void{
+        r.getVehiculo().setEstadoEnAlquiler();
 
-                const inicio = moment(r.inicio, "YYYY-MM-DD");
-                const fin = moment(r.fin, "YYYY-MM-DD");
-                const existenteInicio = moment(existente.inicio, "YYYY-MM-DD");
-                const existenteFin = moment(existente.fin, "YYYY-MM-DD");
+        const lista = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
+        lista.push(r);
 
-                if(inicio.isBetween(existenteInicio, existenteFin, undefined, "[)")){
-                    return false;
-                }
-                if(fin.isBetween(existenteInicio, existenteFin, undefined, "(]")){
-                    return false;
-                }
-                if(inicio.isSameOrBefore(existenteInicio) && fin.isSameOrAfter(existenteFin)){
-                    return false;
-                }
-            }   
-        }
-        return true;
+        this.reservas.set(r.getVehiculo().getNumMatricula(), lista);
+        this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
     }
 
-    public calcularKilometraje(r: Reserva): number{
-
+    public recibirVehiculo(r: Reserva): number{
+        r.getVehiculo().setEstadoDisponible();
+        const precioFinal = r.calcularPrecioReserva();
+        this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
+        return precioFinal;
     }
-
-    public solicitarTarifar(r: Reserva): number{
-        return r.cal
-    }
-
 }
