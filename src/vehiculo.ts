@@ -1,13 +1,20 @@
 import {EstadoVehiculo} from "./estadoVehiculo";
+import DatosMantenimiento from "./datosMantenimiento";
 
 export default abstract class Vehiculo{
-    constructor(private numMatricula: number, private marcaAuto: string, private kilometro: number, private estado: EstadoVehiculo){
+    constructor(private numMatricula: number, 
+    private marcaAuto: string, 
+    private kilometro: number, 
+    private estado: EstadoVehiculo,
+    private datosMantenimiento: DatosMantenimiento,
+    private datosEstadistica: DatosEstadistica){
         this.estado = EstadoVehiculo.DISPONIBLE;
     }
 
     public setNumMatricula(value: number): void{
         this.numMatricula = value;
     }
+    
     public getNumMatricula(): number{
         return this.numMatricula;
     }
@@ -15,6 +22,7 @@ export default abstract class Vehiculo{
     public setMarcaAuto(value: string): void{
         this.marcaAuto = value;
     }
+
     public getMarcaAuto(): string{
         return this.marcaAuto;
     }
@@ -22,6 +30,7 @@ export default abstract class Vehiculo{
     public setKilometro(value: number): void{
         this.kilometro = value;
     }
+
     public getKilometro(): number{
         return this.kilometro;
     }
@@ -44,5 +53,13 @@ export default abstract class Vehiculo{
 
     public getEstado(): EstadoVehiculo {
         return this.estado;
+    }
+
+    public setDatosMantenimiento(datos: DatosMantenimiento): void{
+        this.datosMantenimiento = datos;
+    }
+
+    public getDatosMantenimiento(): DatosMantenimiento{
+        return this.datosMantenimiento;
     }
 }
