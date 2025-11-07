@@ -32,8 +32,9 @@ export default class GestionAlquiler{
         if(vehiculo.getEstado() !== EstadoVehiculo.DISPONIBLE){
             throw new Error("El vehiculo no esta disponible.");
         }
-        if(this.verificadorDisponibilidad.estaEnMantenimiento(r)){
-            throw new Error("El vehiculo se encuentra en Mantenimiento.");
+        if(this.verificadorDisponibilidad.necesitaMantenimiento(r)){
+            r.getVehiculo().setEstadoEnMantenimiento();
+            throw new Error("El vehiculo solicitado se encuentra en mantenimiento.");
         }
         const reservasDelVehiculo = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         
@@ -42,6 +43,7 @@ export default class GestionAlquiler{
 
     public entregarVehiculo(r: Reserva): void{
         r.getVehiculo().setEstadoEnAlquiler();
+        r.getVehiculo().datosMantenimiento.alquileresCantidad++;
 
         const lista = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         lista.push(r);
