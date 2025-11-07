@@ -32,6 +32,9 @@ export default class GestionAlquiler{
         if(vehiculo.getEstado() !== EstadoVehiculo.DISPONIBLE){
             throw new Error("El vehiculo no esta disponible.");
         }
+        if(this.verificadorDisponibilidad.estaEnMantenimiento(r)){
+            throw new Error("El vehiculo se encuentra en Mantenimiento.");
+        }
         const reservasDelVehiculo = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         
         return this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo);

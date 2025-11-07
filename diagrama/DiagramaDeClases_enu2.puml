@@ -42,12 +42,12 @@ class DatosMantenimiento{
     -alquileresCantidad: number
 
     --Getters_Y_Setters--
+    + calculadoraFecha()
 }
 
 interface Tarifa{
     calcularKm: CalcularKilometros
     calcularTarifa(reserva: Reserva): number
-    getTemporada: Temporada
 }
 
 class tarifaSuv implements Tarifa{}
@@ -81,43 +81,42 @@ enum EstadoVehiculo{
     NECESITA_LIMPIEZA,
 }
 
-class GestionAlquiler{
+class Administracion{
     -vehiculos: Map<matricula: number, vehiculo>
     -reservas: Map<idReserva: number,Reserva>
     -verificadorDisponibilidad: Disponibilidad
     -controladorDeEstadisticas: Estadistica
 
     --Getters_Y_Setters--
+    -procesarMantenimiento(vehiculo: Vehiculo): boolean
     +procesarReserva(reserva: Reserva): boolean
     +entregarVehiculo(reserva: Reserva): void
     +recibirVehiculo(reserva: Reserva): void
 }
 
 class Disponibilidad{
-    -procesarMantenimiento(vehiculo: Vehiculo): boolean
     +estaDisponible(reserva: Reserva, Reserva[]): boolean
 }
 
 class Estadistica{
-    + vehiculoMasAlquilado(vehiculos: Map<Vehiculo>): Vehiculo
-    + menosRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
-    + mayorRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
-    + cantidadEnAlquiler(vehiculos: Map<Vehiculo>): number
-    + generarReporte(vehiculos: Map<Vehiculo>): void
+    -vehiculos: Map<Vehiculo>
+    + vehiculoMasAlquilado(): Vehiculo
+    + menosRentabilidad(): Vehiculo
+    + mayorRentabilidad(): Vehiculo
+    + cantidadEnAlquiler(): number
+    + generarReporte(): void
 }
 
 
 ' Relaciones
 Vehiculo *-- Tarifa
-GestionAlquiler *-- Vehiculo
+Administracion *-- Vehiculo
 Disponibilidad *-- Reserva
 Reserva *-- CalcularKilometros
-GestionAlquiler *-- Disponibilidad
-GestionAlquiler <-- Reserva
+Administracion *-- Disponibilidad
+Administracion <-- Reserva
 Vehiculo *-u- DatosEstadistica
 Vehiculo *-l- DatosMantenimiento
-GestionAlquiler <-- Estadistica
-Tarifa *-- Temporada
-Vehiculo *-- Mantenimiento
+Estadistica *-l- Vehiculo
 
 @enduml
