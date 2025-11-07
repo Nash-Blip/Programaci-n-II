@@ -42,7 +42,7 @@ class DatosMantenimiento{
     -alquileresCantidad: number
 
     --Getters_Y_Setters--
-    + calculadoraFecha()
+    + calculadoraFecha(): number
 }
 
 interface Tarifa{
@@ -94,8 +94,8 @@ class Administracion{
 }
 
 class Disponibilidad{
-    +estaDisponible(reserva: Reserva, Reserva[]): boolean
-    + estaEnMantenimiento(r: Reserva): boolean
+    + estaDisponible(reserva: Reserva, Reserva[]): boolean
+    + necesitaMantenimiento(r: Reserva): boolean
 }
 
 class Estadistica{

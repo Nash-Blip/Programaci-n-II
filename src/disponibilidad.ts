@@ -22,7 +22,7 @@ export default class Disponibilidad {
     return true;
   }
 
-  public estaEnMantenimiento(r: Reserva): boolean{
+  public necesitaMantenimiento(r: Reserva): boolean{
     if(
       r.getVehiculo().getkmUltimoMantenimiento() > 10000 ||
       r.getVehiculo().datosMantenimiento.calculadoraFecha() > 12 ||
