@@ -88,7 +88,6 @@ class Administracion{
     -controladorDeEstadisticas: Estadistica
 
     --Getters_Y_Setters--
-    -procesarMantenimiento(vehiculo: Vehiculo): boolean
     +procesarReserva(reserva: Reserva): boolean
     +entregarVehiculo(reserva: Reserva): void
     +recibirVehiculo(reserva: Reserva): void
@@ -96,6 +95,7 @@ class Administracion{
 
 class Disponibilidad{
     +estaDisponible(reserva: Reserva, Reserva[]): boolean
+    + estaEnMantenimiento(r: Reserva): boolean
 }
 
 class Estadistica{
