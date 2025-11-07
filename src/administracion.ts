@@ -3,7 +3,7 @@ import Reserva from "./Reserva";
 import {EstadoVehiculo} from "./estadoVehiculo";
 import Disponibilidad from "./disponibilidad";
 
-export default class GestionAlquiler{
+export default class Administracion{
 
     private vehiculos: Map<number, Vehiculo>;
     private reservas: Map<number, Reserva[]>;
@@ -43,7 +43,6 @@ export default class GestionAlquiler{
 
     public entregarVehiculo(r: Reserva): void{
         r.getVehiculo().setEstadoEnAlquiler();
-        r.getVehiculo().datosMantenimiento.alquileresCantidad++;
 
         const lista = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         lista.push(r);
@@ -54,8 +53,13 @@ export default class GestionAlquiler{
 
     public recibirVehiculo(r: Reserva): number{
         r.getVehiculo().setEstadoDisponible();
+        r.getVehiculo()
+        .getDatosMantenimiento()
+        .setAlquileresCantidad(r.getVehiculo().getDatosMantenimiento().getAlquileresCantidad() + 1);
+
         const precioFinal = r.calcularPrecioReserva();
         this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
+        
         return precioFinal;
     }
 }
