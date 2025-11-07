@@ -7,7 +7,7 @@ export default class Reserva{
     private vehiculo: Vehiculo;
     private kmIniciales: number
     private kmFinales: number
-    private calcularKilometros = CalcularKilometros;
+    private calcularKilometros: CalcularKilometros = new CalcularKilometros()
 
     constructor(idReserva: number,
   fechaInicio: Date,
@@ -21,7 +21,6 @@ export default class Reserva{
         this.vehiculo = vehiculo;
         this.kmIniciales= kmIniciales;
         this.kmFinales = kmFinales; 
-        this.calcularKilometros = new CalcularKilometros();
     }
 
 

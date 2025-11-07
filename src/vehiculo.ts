@@ -1,8 +1,11 @@
 import {EstadoVehiculo} from "./estadoVehiculo";
+import { Tarifa } from "./Tarifa";
 
 export default abstract class Vehiculo{
+    private logicaTarifa: Tarifa;
     constructor(private numMatricula: number, private marcaAuto: string, private kilometro: number, private estado: EstadoVehiculo){
         this.estado = EstadoVehiculo.DISPONIBLE;
+        this.logicaTarifa = undefined as unknown as Tarifa
     }
 
     public setNumMatricula(value: number): void{
@@ -44,5 +47,9 @@ export default abstract class Vehiculo{
 
     public getEstado(): EstadoVehiculo {
         return this.estado;
+    }
+
+    public getLogicaTarifa(){
+        return this.logicaTarifa
     }
 }
