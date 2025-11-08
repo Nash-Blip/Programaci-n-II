@@ -1,4 +1,4 @@
-import DatosMantenimiento from "../src/DatosMantenimiento";
+import DatosMantenimiento from "../src/datosMantenimiento";
 import moment from "moment";
 
 describe("DatosMantenimiento", () => {

@@ -59,7 +59,7 @@ export default class Administracion{
 
         const precioFinal = r.calcularPrecioReserva();
         this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
-        
+
         return precioFinal;
     }
 }
