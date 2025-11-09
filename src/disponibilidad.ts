@@ -1,6 +1,6 @@
 import Reserva from "./Reserva";
 import moment from "moment";
-import Vehiculo from "./vehiculo";
+
 
 export default class Disponibilidad {
   public estaDisponible(r: Reserva, reservasExistentes: Reserva[]): boolean {
@@ -23,13 +23,10 @@ export default class Disponibilidad {
   }
 
   public necesitaMantenimiento(r: Reserva): boolean{
-    if(
-      r.getVehiculo().getkmUltimoMantenimiento() > 10000 ||
-      r.getVehiculo().datosMantenimiento.calculadoraFecha() > 12 ||
-      r.getVehiculo().datosMantenimiento.alquileresCantidad > 5
-    ){
-      return true;
-    }
-    return false;
+    const kmDesdeUltimoMant = r.getVehiculo().getKilometro() - r.getVehiculo().getDatosMantenimiento().getKmUltimoMant();
+    const mesesTranscuMant = r.getVehiculo().getDatosMantenimiento().calculadoraFecha();
+    const cantAlquileres = r.getVehiculo().getDatosMantenimiento().getAlquileresCantidad();
+    
+    return kmDesdeUltimoMant > 10000 || mesesTranscuMant > 12 || cantAlquileres > 5;
   }
 }

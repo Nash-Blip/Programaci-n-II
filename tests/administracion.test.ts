@@ -1,107 +1,229 @@
-import GestionAlquiler from "../src/gestionAlquiler";
+import { mock, MockProxy } from "jest-mock-extended";
+import Administracion from "../src/administracion";
 import Vehiculo from "../src/vehiculo";
+import Reserva from "../src/Reserva";
 import { EstadoVehiculo } from "../src/estadoVehiculo";
-import Sedan from "../src/sedan";
+import Disponibilidad from "../src/disponibilidad";
+import DatosMantenimiento from "../src/datosMantenimiento";
 
-const estaDisponibleMock = jest.fn();
-jest.mock("../src/disponibilidad", () => ({
-  __esModule: true,
-  default: class Disponibilidad {
-    public estaDisponible = estaDisponibleMock;
-  },
-}));
+jest.mock("../src/disponibilidad");
+const DisponibilidadMock = Disponibilidad as jest.MockedClass<typeof Disponibilidad>;
 
-const calcularPrecioReservaMock = jest.fn();
-const getVehiculoMock = jest.fn();
-jest.mock("../src/Reserva", () => {
-  return {
-    __esModule: true,
-    default: class Reserva {
-      constructor(
-        public idReserva: number,
-        public fechaInicio: Date,
-        public fechaFinalizacion: Date,
-        public vehiculo: Vehiculo,
-        public kmIniciales: number,
-        public kmFinales: number
-      ) {}
-      calcularPrecioReserva = calcularPrecioReservaMock;
-      getVehiculo = getVehiculoMock;
-    },
-  };
-});
-
-const d = (y: number, m: number, day: number) => new Date(y, m, day);
-
-describe("GestionAlquiler (mock de Reserva y Disponibilidad)", () => {
-  let gestion: GestionAlquiler;
-  let vehiculo: Vehiculo;
-  let reserva: any;
+describe("Administracion", () => {
+  let admin: Administracion;
+  let disponibilidadMock: MockProxy<Disponibilidad>;
 
   beforeEach(() => {
-    estaDisponibleMock.mockReset();
-    calcularPrecioReservaMock.mockReset();
-    getVehiculoMock.mockReset();
-
-    gestion = new GestionAlquiler();
-
-    vehiculo = new Sedan(123, "Sedan", 10000, EstadoVehiculo.DISPONIBLE);
-
-    const ReservaMock = jest.requireMock("../src/Reserva").default;
-    reserva = new ReservaMock(1, d(2025, 10, 10), d(2025, 10, 15), vehiculo, 1000, 1200);
-
-    getVehiculoMock.mockReturnValue(vehiculo);
-
-    gestion.getVehiculos().set(vehiculo.getNumMatricula(), vehiculo);
-  });
-
-  test("procesarReserva devuelve true cuando disponibilidad es true", () => {
-    estaDisponibleMock.mockReturnValue(true);
-    expect(gestion.procesarReserva(reserva)).toBe(true);
-    expect(estaDisponibleMock).toHaveBeenCalled();
+    DisponibilidadMock.mockClear();
+    disponibilidadMock = mock<Disponibilidad>();
+    DisponibilidadMock.mockImplementation(() => disponibilidadMock);
+    admin = new Administracion();
   });
 
   test("procesarReserva lanza error si el vehículo no existe", () => {
-    const g2 = new GestionAlquiler();
-    estaDisponibleMock.mockReturnValue(true);
-    expect(() => g2.procesarReserva(reserva)).toThrow("Vehiculo no encontrado.");
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+
+    vehiculoMock.getNumMatricula.mockReturnValue(1);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    expect(() => admin.procesarReserva(reservaMock)).toThrow("Vehiculo no encontrado.");
   });
 
-  test("procesarReserva lanza error si el vehículo no está disponible", () => {
-    vehiculo.setEstadoEnAlquiler();
-    expect(() => gestion.procesarReserva(reserva)).toThrow("El vehiculo no esta disponible.");
-    expect(estaDisponibleMock).not.toHaveBeenCalled();
+  test("procesarReserva lanza error si el vehículo no está DISPONIBLE", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+
+    vehiculoMock.getNumMatricula.mockReturnValue(2);
+    vehiculoMock.getEstado.mockReturnValue(EstadoVehiculo.EN_ALQUILER);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    admin.getVehiculos().set(2, vehiculoMock);
+
+    expect(() => admin.procesarReserva(reservaMock)).toThrow(
+      "El vehiculo no esta disponible."
+    );
   });
 
-  test("procesarReserva devuelve false cuando disponibilidad es false", () => {
-    estaDisponibleMock.mockReturnValue(false);
-    expect(gestion.procesarReserva(reserva)).toBe(false);
+  test("procesarReserva marca mantenimiento y lanza error cuando necesitaMantenimiento es true", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+
+    vehiculoMock.getNumMatricula.mockReturnValue(3);
+    vehiculoMock.getEstado.mockReturnValue(EstadoVehiculo.DISPONIBLE);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    admin.getVehiculos().set(3, vehiculoMock);
+    disponibilidadMock.necesitaMantenimiento.mockReturnValue(true);
+
+    expect(() => admin.procesarReserva(reservaMock)).toThrow(
+      "El vehiculo solicitado se encuentra en mantenimiento."
+    );
+
+    expect(vehiculoMock.setEstadoEnMantenimiento).toHaveBeenCalledTimes(1);
+    expect(disponibilidadMock.estaDisponible).not.toHaveBeenCalled();
   });
 
-  test("procesarReserva devuelve true cuando disponibilidad es true", () => {
-    estaDisponibleMock.mockReturnValue(true);
-    expect(gestion.procesarReserva(reserva)).toBe(true);
+  test("procesarReserva llama a estaDisponible con reservas del vehículo cuando no requiere mantenimiento", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+    const reservaExistente = mock<Reserva>();
+
+    vehiculoMock.getNumMatricula.mockReturnValue(4);
+    vehiculoMock.getEstado.mockReturnValue(EstadoVehiculo.DISPONIBLE);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    admin.getVehiculos().set(4, vehiculoMock);
+    admin.getReservas().set(4, [reservaExistente]);
+
+    disponibilidadMock.necesitaMantenimiento.mockReturnValue(false);
+    disponibilidadMock.estaDisponible.mockReturnValue(true);
+
+    admin.procesarReserva(reservaMock);
+
+    expect(disponibilidadMock.estaDisponible).toHaveBeenCalledWith(
+      reservaMock,
+      [reservaExistente]
+    );
   });
 
-  test("entregarVehiculo agrega una reserva y cambia el estado a EN_ALQUILER", () => {
-    gestion.entregarVehiculo(reserva);
+  test("procesarReserva retorna true cuando estaDisponible es true", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
 
-    const reservas = gestion.getReservas().get(vehiculo.getNumMatricula());
-    expect(reservas?.length).toBe(1);
-    expect(reservas?.[0]).toBe(reserva);
+    vehiculoMock.getNumMatricula.mockReturnValue(5);
+    vehiculoMock.getEstado.mockReturnValue(EstadoVehiculo.DISPONIBLE);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
 
-    const v = gestion.getVehiculos().get(vehiculo.getNumMatricula());
-    expect(v?.getEstado()).toBe(EstadoVehiculo.EN_ALQUILER);
+    admin.getVehiculos().set(5, vehiculoMock);
+    disponibilidadMock.necesitaMantenimiento.mockReturnValue(false);
+    disponibilidadMock.estaDisponible.mockReturnValue(true);
+
+    const resultado = admin.procesarReserva(reservaMock);
+
+    expect(resultado).toBe(true);
   });
 
-  test("recibirVehiculo lo marca DISPONIBLE y notifica el precio", () => {
-    calcularPrecioReservaMock.mockReturnValue(1500);
+  test("procesarReserva retorna false cuando estaDisponible es false", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
 
-    const precio = gestion.recibirVehiculo(reserva);
-    
-    const v = gestion.getVehiculos().get(vehiculo.getNumMatricula());
-    expect(v?.getEstado()).toBe(EstadoVehiculo.DISPONIBLE);
-    expect(calcularPrecioReservaMock).toHaveBeenCalled();
-    expect(precio).toBe(1500);
+    vehiculoMock.getNumMatricula.mockReturnValue(6);
+    vehiculoMock.getEstado.mockReturnValue(EstadoVehiculo.DISPONIBLE);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    admin.getVehiculos().set(6, vehiculoMock);
+    disponibilidadMock.necesitaMantenimiento.mockReturnValue(false);
+    disponibilidadMock.estaDisponible.mockReturnValue(false);
+
+    const resultado = admin.procesarReserva(reservaMock);
+
+    expect(resultado).toBe(false);
+  });
+
+  test("entregarVehiculo cambia el estado del vehículo a EN_ALQUILER", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+
+    vehiculoMock.getNumMatricula.mockReturnValue(10);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    admin.entregarVehiculo(reservaMock);
+
+    expect(vehiculoMock.setEstadoEnAlquiler).toHaveBeenCalledTimes(1);
+  });
+
+  test("entregarVehiculo agrega la reserva al mapa de reservas", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+
+    vehiculoMock.getNumMatricula.mockReturnValue(11);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    admin.entregarVehiculo(reservaMock);
+
+    const reservasDelVehiculo = admin.getReservas().get(11);
+    expect(reservasDelVehiculo).toBeDefined();
+    expect(reservasDelVehiculo && reservasDelVehiculo[0]).toBe(reservaMock);
+  });
+
+  test("entregarVehiculo actualiza el mapa de vehículos con el vehículo de la reserva", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+
+    vehiculoMock.getNumMatricula.mockReturnValue(12);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+
+    admin.entregarVehiculo(reservaMock);
+
+    expect(admin.getVehiculos().get(12)).toBe(vehiculoMock);
+  });
+
+  test("recibirVehiculo marca el vehículo como DISPONIBLE", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+    const datosMantenimiento = new DatosMantenimiento(0, new Date(), 0);
+
+    vehiculoMock.getNumMatricula.mockReturnValue(20);
+    vehiculoMock.getDatosMantenimiento.mockReturnValue(datosMantenimiento);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+    reservaMock.calcularPrecioReserva.mockReturnValue(1000);
+
+    admin.getVehiculos().set(20, vehiculoMock);
+
+    admin.recibirVehiculo(reservaMock);
+
+    expect(vehiculoMock.setEstadoDisponible).toHaveBeenCalledTimes(1);
+  });
+
+  test("recibirVehiculo incrementa alquileresCantidad en DatosMantenimiento", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+    const datosMantenimiento = new DatosMantenimiento(0, new Date(), 3);
+
+    vehiculoMock.getNumMatricula.mockReturnValue(21);
+    vehiculoMock.getDatosMantenimiento.mockReturnValue(datosMantenimiento);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+    reservaMock.calcularPrecioReserva.mockReturnValue(500);
+
+    admin.getVehiculos().set(21, vehiculoMock);
+
+    admin.recibirVehiculo(reservaMock);
+
+    expect(datosMantenimiento.getAlquileresCantidad()).toBe(4);
+  });
+
+  test("recibirVehiculo actualiza el mapa de vehículos con el vehículo recibido", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+    const datosMantenimiento = new DatosMantenimiento(0, new Date(), 1);
+
+    vehiculoMock.getNumMatricula.mockReturnValue(22);
+    vehiculoMock.getDatosMantenimiento.mockReturnValue(datosMantenimiento);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+    reservaMock.calcularPrecioReserva.mockReturnValue(800);
+
+    admin.getVehiculos().set(22, vehiculoMock);
+
+    admin.recibirVehiculo(reservaMock);
+
+    expect(admin.getVehiculos().get(22)).toBe(vehiculoMock);
+  });
+
+  test("recibirVehiculo devuelve el precio calculado de la reserva", () => {
+    const vehiculoMock = mock<Vehiculo>();
+    const reservaMock = mock<Reserva>();
+    const datosMantenimiento = new DatosMantenimiento(0, new Date(), 0);
+
+    vehiculoMock.getNumMatricula.mockReturnValue(23);
+    vehiculoMock.getDatosMantenimiento.mockReturnValue(datosMantenimiento);
+    reservaMock.getVehiculo.mockReturnValue(vehiculoMock);
+    reservaMock.calcularPrecioReserva.mockReturnValue(1234);
+
+    admin.getVehiculos().set(23, vehiculoMock);
+
+    const precio = admin.recibirVehiculo(reservaMock);
+
+    expect(precio).toBe(1234);
   });
 });
