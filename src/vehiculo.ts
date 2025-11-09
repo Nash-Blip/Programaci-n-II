@@ -1,14 +1,17 @@
 import {EstadoVehiculo} from "./estadoVehiculo";
-import DatosMantenimiento from "./datosMantenimiento";
+import { Tarifa } from "./Tarifa";
 
 export default abstract class Vehiculo{
-    constructor(private numMatricula: number, 
-    private marcaAuto: string, 
-    private kilometro: number, 
-    private estado: EstadoVehiculo,
-    private datosMantenimiento: DatosMantenimiento,
-    private datosEstadistica: DatosEstadistica){
+    private numMatricula: number;
+    private estado: EstadoVehiculo;
+    private kilometro: number;
+    protected tarifaBase: number;
+
+    constructor(protected logicaTarifa: Tarifa){
+        this.numMatricula = 0;
         this.estado = EstadoVehiculo.DISPONIBLE;
+        this.kilometro = 0;
+        this.tarifaBase = 0;
     }
 
     public setNumMatricula(value: number): void{

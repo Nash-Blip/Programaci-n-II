@@ -1,8 +1,9 @@
 import Vehiculo from "./vehiculo";
-import { EstadoVehiculo } from "./estadoVehiculo";
+import TarifaSedan from "./TarifaSedan";
 
 export default class Sedan extends Vehiculo{
-    constructor(numMatricula: number, marcaAuto: string, kilemtro: number, estado: EstadoVehiculo){
-        super(numMatricula, marcaAuto, kilemtro, estado);
+    constructor(){
+        super(new TarifaSedan());
+        this.tarifaBase = 50;
     }
 }
