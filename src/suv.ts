@@ -3,7 +3,7 @@ import TarifaSuv from "./TarifaSuv";
 
 export default class SUV extends Vehiculo{
     constructor(){
-        super(new TarifaSuv());
+        super(new TarifaSuv(), new DatosMantenimiento());
         this.tarifaBase = 80;
     }
 }

@@ -1,4 +1,5 @@
-import {EstadoVehiculo} from "./estadoVehiculo";
+import { EstadoVehiculo } from "./estadoVehiculo";
+import DatosMantenimiento from "./datosMantenimiento";
 import { Tarifa } from "./Tarifa";
 
 export default abstract class Vehiculo{
@@ -7,50 +8,42 @@ export default abstract class Vehiculo{
     private kilometro: number;
     protected tarifaBase: number;
 
-    constructor(protected logicaTarifa: Tarifa){
+    constructor(protected logicaTarifa: Tarifa, private datosMantenimiento: DatosMantenimiento, private datosEstadistica: DatosEstadistica){
         this.numMatricula = 0;
         this.estado = EstadoVehiculo.DISPONIBLE;
         this.kilometro = 0;
         this.tarifaBase = 0;
     }
 
-    public setNumMatricula(value: number): void{
+    public setNumMatricula(value: number): void {
         this.numMatricula = value;
     }
     
-    public getNumMatricula(): number{
+    public getNumMatricula(): number {
         return this.numMatricula;
     }
 
-    public setMarcaAuto(value: string): void{
-        this.marcaAuto = value;
-    }
-
-    public getMarcaAuto(): string{
-        return this.marcaAuto;
-    }
-
-    public setKilometro(value: number): void{
+    public setKilometro(value: number): void {
         this.kilometro = value;
     }
 
-    public getKilometro(): number{
+    public getKilometro(): number {
         return this.kilometro;
     }
 
-    public setEstadoDisponible(): void{
+    public setEstadoDisponible(): void {
         this.estado = EstadoVehiculo.DISPONIBLE;
     }
 
-    public setEstadoEnAlquiler(): void{
+    public setEstadoEnAlquiler(): void {
         this.estado = EstadoVehiculo.EN_ALQUILER;
     }
 
-    public setEstadoEnMantenimiento(): void{
+    public setEstadoEnMantenimiento(): void {
         this.estado = EstadoVehiculo.EN_MANTENIMIENTO;
     }
 
-    public setEstadoNecesitaLimpieza(): void{
+    public setEstadoNecesitaLimpieza(): void {
         this.estado = EstadoVehiculo.NECESITA_LIMPIEZA;
     }
 
@@ -58,11 +51,19 @@ export default abstract class Vehiculo{
         return this.estado;
     }
 
+    public getTarifaBase(): number {
+        return this.tarifaBase;
+    }
+
+    public getLogicaTarifa(): Tarifa {
+        return this.logicaTarifa;
+    }
+
     public setDatosMantenimiento(datos: DatosMantenimiento): void{
         this.datosMantenimiento = datos;
     }
 
-    public getDatosMantenimiento(): DatosMantenimiento{
+    public getDatosMantenimiento(): DatosMantenimiento {
         return this.datosMantenimiento;
     }
 }
