@@ -1,6 +1,7 @@
 import { EstadoVehiculo } from "./estadoVehiculo";
 import DatosMantenimiento from "./datosMantenimiento";
 import { Tarifa } from "./Tarifa";
+import DatosEstadistica from "./datosEstadistica";
 
 export default abstract class Vehiculo{
     private numMatricula: number;
