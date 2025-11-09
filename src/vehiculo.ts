@@ -55,4 +55,12 @@ export default abstract class Vehiculo{
     public getLogicaTarifa(){
         return this.logicaTarifa;
     }
+
+    public setDatosMantenimiento(datos: DatosMantenimiento): void{
+        this.datosMantenimiento = datos;
+    }
+
+    public getDatosMantenimiento(): DatosMantenimiento{
+        return this.datosMantenimiento;
+    }
 }
