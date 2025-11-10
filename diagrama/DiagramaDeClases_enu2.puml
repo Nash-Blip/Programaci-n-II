@@ -7,7 +7,6 @@ abstract class Vehiculo{
     - datosEstadistica: DatosEstadistica
     - kilometros: number
     - logicaTarifa: Tarifa
-    - tarifaBase: number
 
     --Getters_Y_Setters--
 }
