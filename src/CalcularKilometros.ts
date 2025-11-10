@@ -7,7 +7,7 @@ export default class CalcularKilometros{
     }
     public calcularKmTotales(kmIniciales: number, kmFinales: number): number{
         if(kmFinales <= kmIniciales){
-            throw new Error ("Los km finales no pueden ser menores que los iniciales.");
+            throw new Error ("Los km finales no pueden ser menores o iguales que los iniciales.");
         }
         return kmFinales - kmIniciales;
     }
