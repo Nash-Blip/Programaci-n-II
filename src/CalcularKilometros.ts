@@ -1,7 +1,7 @@
 export default class CalcularKilometros{
     public promedioKmDiarios(kmTotales: number, dias: number): number{
         if(dias <= 0){
-            return 0;
+            throw new Error ("Los dias deben ser mayor a 0");
         }
         return kmTotales / dias;
     }
