@@ -1,6 +1,6 @@
 import Vehiculo from "./vehiculo";
 import TarifaCompacto from "./TarifaCompacto";
-import DatosMantenimiento from "./datosMantenimiento";
+import DatosMantenimiento from "./DatosMantenimiento";
 
 export default class Compacto extends Vehiculo{
     constructor(){
