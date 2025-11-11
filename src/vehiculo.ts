@@ -8,40 +8,35 @@ export default abstract class Vehiculo{
         this.logicaTarifa = undefined as unknown as Tarifa
     }
 
-    public setNumMatricula(value: number): void{
+    public setNumMatricula(value: number): void {
         this.numMatricula = value;
     }
-    public getNumMatricula(): number{
+    
+    public getNumMatricula(): number {
         return this.numMatricula;
     }
 
-    public setMarcaAuto(value: string): void{
-        this.marcaAuto = value;
-    }
-    public getMarcaAuto(): string{
-        return this.marcaAuto;
-    }
-
-    public setKilometro(value: number): void{
+    public setKilometro(value: number): void {
         this.kilometro = value;
     }
-    public getKilometro(): number{
+
+    public getKilometro(): number {
         return this.kilometro;
     }
 
-    public setEstadoDisponible(): void{
+    public setEstadoDisponible(): void {
         this.estado = EstadoVehiculo.DISPONIBLE;
     }
 
-    public setEstadoEnAlquiler(): void{
+    public setEstadoEnAlquiler(): void {
         this.estado = EstadoVehiculo.EN_ALQUILER;
     }
 
-    public setEstadoEnMantenimiento(): void{
+    public setEstadoEnMantenimiento(): void {
         this.estado = EstadoVehiculo.EN_MANTENIMIENTO;
     }
 
-    public setEstadoNecesitaLimpieza(): void{
+    public setEstadoNecesitaLimpieza(): void {
         this.estado = EstadoVehiculo.NECESITA_LIMPIEZA;
     }
 

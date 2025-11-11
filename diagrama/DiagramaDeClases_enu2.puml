@@ -7,7 +7,6 @@ abstract class Vehiculo{
     - datosEstadistica: DatosEstadistica
     - kilometros: number
     - logicaTarifa: Tarifa
-    - tarifaBase: number
 
     --Getters_Y_Setters--
 }
@@ -42,12 +41,12 @@ class DatosMantenimiento{
     -alquileresCantidad: number
 
     --Getters_Y_Setters--
+    + calculadoraFecha(): number
 }
 
 interface Tarifa{
     calcularKm: CalcularKilometros
     calcularTarifa(reserva: Reserva): number
-    getTemporada: Temporada
 }
 
 class tarifaSuv implements Tarifa{}
@@ -81,7 +80,7 @@ enum EstadoVehiculo{
     NECESITA_LIMPIEZA,
 }
 
-class GestionAlquiler{
+class Administracion{
     -vehiculos: Map<matricula: number, vehiculo>
     -reservas: Map<idReserva: number,Reserva>
     -verificadorDisponibilidad: Disponibilidad
@@ -94,30 +93,29 @@ class GestionAlquiler{
 }
 
 class Disponibilidad{
-    -procesarMantenimiento(vehiculo: Vehiculo): boolean
-    +estaDisponible(reserva: Reserva, Reserva[]): boolean
+    + estaDisponible(reserva: Reserva, Reserva[]): boolean
+    + necesitaMantenimiento(r: Reserva): boolean
 }
 
 class Estadistica{
-    + vehiculoMasAlquilado(vehiculos: Map<Vehiculo>): Vehiculo
-    + menosRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
-    + mayorRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
-    + cantidadEnAlquiler(vehiculos: Map<Vehiculo>): number
-    + generarReporte(vehiculos: Map<Vehiculo>): void
+    -vehiculos: Map<Vehiculo>
+    + vehiculoMasAlquilado(): Vehiculo
+    + menosRentabilidad(): Vehiculo
+    + mayorRentabilidad(): Vehiculo
+    + cantidadEnAlquiler(): number
+    + generarReporte(): void
 }
 
 
 ' Relaciones
 Vehiculo *-- Tarifa
-GestionAlquiler *-- Vehiculo
+Administracion *-- Vehiculo
 Disponibilidad *-- Reserva
 Reserva *-- CalcularKilometros
-GestionAlquiler *-- Disponibilidad
-GestionAlquiler <-- Reserva
+Administracion *-- Disponibilidad
+Administracion <-- Reserva
 Vehiculo *-u- DatosEstadistica
 Vehiculo *-l- DatosMantenimiento
-GestionAlquiler <-- Estadistica
-Tarifa *-- Temporada
-Vehiculo *-- Mantenimiento
+Estadistica *-l- Vehiculo
 
 @enduml

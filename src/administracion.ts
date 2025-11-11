@@ -3,7 +3,7 @@ import Reserva from "./Reserva";
 import {EstadoVehiculo} from "./estadoVehiculo";
 import Disponibilidad from "./disponibilidad";
 
-export default class GestionAlquiler{
+export default class Administracion{
 
     private vehiculos: Map<number, Vehiculo>;
     private reservas: Map<number, Reserva[]>;
@@ -32,6 +32,10 @@ export default class GestionAlquiler{
         if(vehiculo.getEstado() !== EstadoVehiculo.DISPONIBLE){
             throw new Error("El vehiculo no esta disponible.");
         }
+        if(this.verificadorDisponibilidad.necesitaMantenimiento(r)){
+            r.getVehiculo().setEstadoEnMantenimiento();
+            throw new Error("El vehiculo solicitado se encuentra en mantenimiento.");
+        }
         const reservasDelVehiculo = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         
         return this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo);
@@ -49,8 +53,13 @@ export default class GestionAlquiler{
 
     public recibirVehiculo(r: Reserva): number{
         r.getVehiculo().setEstadoDisponible();
+        r.getVehiculo()
+        .getDatosMantenimiento()
+        .setAlquileresCantidad(r.getVehiculo().getDatosMantenimiento().getAlquileresCantidad() + 1);
+
         const precioFinal = r.calcularPrecioReserva();
         this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
+
         return precioFinal;
     }
 }
