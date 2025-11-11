@@ -1,14 +1,15 @@
 import Disponibilidad from "../src/disponibilidad";
 import type Reserva from "../src/Reserva";
-import { mock } from "jest-mock-extended";
 
-const res = (y: number, m: number, d: number) => new Date(y, m, d);
+const res = (y: number, m: number, d: number): Date => new Date(y, m, d);
 
-const reservaMock = (ini: Date, fin: Date) => {
-  const r = mock<Reserva>();
-  r.getFechaInicio.mockReturnValue(ini);
-  r.getFechaFinalizacion.mockReturnValue(fin);
-  return r;
+const reservaMock = (ini: Date, fin: Date): jest.Mocked<Reserva> => {
+  const r: Partial<jest.Mocked<Reserva>> = {
+    getFechaInicio: jest.fn(() => ini),
+    getFechaFinalizacion: jest.fn(() => fin),
+  };
+
+  return r as jest.Mocked<Reserva>;
 };
 
 describe("Disponibilidad", () => {
