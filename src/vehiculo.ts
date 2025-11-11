@@ -8,8 +8,11 @@ export default abstract class Vehiculo{
     private estado: EstadoVehiculo;
     private kilometro: number;
     protected tarifaBase: number;
+    protected logicaTarifa: Tarifa;
+    protected datosMantenimiento: DatosMantenimiento;
+    public datosEstadistica: DatosEstadistica;
 
-    constructor(protected logicaTarifa: Tarifa, protected datosMantenimiento: DatosMantenimiento, public datosEstadistica: DatosEstadistica){
+    constructor(){
         this.numMatricula = 0;
         this.kilometro = 0;
         this.tarifaBase = 0;
@@ -17,6 +20,8 @@ export default abstract class Vehiculo{
         this.logicaTarifa = undefined as unknown as Tarifa;
         this.kilometro = 0;
         this.tarifaBase = 0;
+        this.datosMantenimiento = new DatosMantenimiento(0, new Date(), 0);
+        this.datosEstadistica = new DatosEstadistica();
     }
 
     public setNumMatricula(value: number): void {
