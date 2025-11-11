@@ -10,6 +10,10 @@ jest.mock("../src/disponibilidad");
 const DisponibilidadMock = Disponibilidad as jest.MockedClass<typeof Disponibilidad>;
 
 function crearVehiculoMock(): jest.Mocked<Vehiculo> {
+  const datosEstadistica = {
+    aumentarCantidadDeVecesAlquilado: jest.fn(),
+  };
+
   return {
     getNumMatricula: jest.fn(),
     getEstado: jest.fn(),
@@ -17,6 +21,7 @@ function crearVehiculoMock(): jest.Mocked<Vehiculo> {
     setEstadoEnAlquiler: jest.fn(),
     setEstadoDisponible: jest.fn(),
     getDatosMantenimiento: jest.fn(),
+    getDatosEstadistica: jest.fn(() => datosEstadistica),
   } as unknown as jest.Mocked<Vehiculo>;
 }
 
@@ -47,7 +52,7 @@ describe("Administracion", () => {
     admin = new Administracion();
   });
 
-  // ========== procesarReserva ==========
+  // ----------- procesarReserva -----------
 
   test("procesarReserva lanza error si el vehículo no existe", () => {
     const vehiculo = crearVehiculoMock();
@@ -147,7 +152,7 @@ describe("Administracion", () => {
     expect(resultado).toBe(false);
   });
 
-  // ========== entregarVehiculo ==========
+  // ----------- entregarVehiculo -----------
 
   test("entregarVehiculo cambia el estado del vehículo a EN_ALQUILER", () => {
     const vehiculo = crearVehiculoMock();
@@ -158,6 +163,19 @@ describe("Administracion", () => {
     admin.entregarVehiculo(reserva);
 
     expect(vehiculo.setEstadoEnAlquiler).toHaveBeenCalledTimes(1);
+  });
+
+  test("entregarVehiculo incrementa la estadística de veces alquilado", () => {
+    const vehiculo = crearVehiculoMock();
+    const reserva = crearReservaMock(vehiculo);
+
+    vehiculo.getNumMatricula.mockReturnValue(100);
+
+    admin.entregarVehiculo(reserva);
+
+    expect(
+      vehiculo.getDatosEstadistica().aumentarCantidadDeVecesAlquilado
+    ).toHaveBeenCalledTimes(1);
   });
 
   test("entregarVehiculo agrega la reserva al mapa de reservas", () => {
@@ -184,7 +202,7 @@ describe("Administracion", () => {
     expect(admin.getVehiculos().get(12)).toBe(vehiculo);
   });
 
-  // ========== recibirVehiculo ==========
+  // ----------- recibirVehiculo -----------
 
   test("recibirVehiculo marca el vehículo como DISPONIBLE", () => {
     const vehiculo = crearVehiculoMock();
