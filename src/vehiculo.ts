@@ -18,7 +18,7 @@ export default abstract class Vehiculo{
         this.logicaTarifa = undefined as unknown as Tarifa;
         this.kilometro = 0;
         this.tarifaBase = 0;
-        this.datosMantenimiento = new DatosMantenimiento();
+        this.datosMantenimiento = new DatosMantenimiento(0, new Date(), 0);
         this.datosEstadistica = new DatosEstadistica();
     }
 
