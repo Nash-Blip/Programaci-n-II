@@ -1,3 +1,4 @@
+/*
 import Vehiculo from "./vehiculo";
 import TarifaSedan from "./TarifaSedan";
 
@@ -7,3 +8,4 @@ export default class Sedan extends Vehiculo{
         this.tarifaBase = 50;
     }
 }
+*/

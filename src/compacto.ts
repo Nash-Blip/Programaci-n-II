@@ -1,4 +1,4 @@
-import Vehiculo from "./vehiculo";
+/*import Vehiculo from "./vehiculo";
 import TarifaCompacto from "./TarifaCompacto";
 import DatosMantenimiento from "./DatosMantenimiento";
 
@@ -8,3 +8,4 @@ export default class Compacto extends Vehiculo{
         this.tarifaBase = 30;
     }
 }
+    */
