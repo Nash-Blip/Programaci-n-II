@@ -32,4 +32,8 @@ export default class DatosEstadistica {
     public getCostosMantenimiento(): number {
         return this.costosMantenimiento;
     }
+
+    public calcularRentabilidad(): number {
+        return this.getIngresosAlquiler() - this.getCostosMantenimiento();
+    }
 }
