@@ -81,7 +81,7 @@ describe("Disponibilidad", () => {
     expect(disp.estaDisponible(nueva, [r1, r2])).toBe(false);
   });
 
-  // ----------- TESTS de necesitaMantenimiento -----------
+  // ----------- necesitaMantenimiento -----------
 
   describe("necesitaMantenimiento", () => {
     const crearReservaMock = (
