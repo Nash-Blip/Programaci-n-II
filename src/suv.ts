@@ -1,4 +1,4 @@
-import Vehiculo from "./vehiculo";
+/*import Vehiculo from "./vehiculo";
 import TarifaSuv from "./TarifaSuv";
 import DatosMantenimiento from "./datosMantenimiento";
 import DatosEstadistica from "./datosEstadistica";
@@ -9,3 +9,4 @@ export default class SUV extends Vehiculo{
         this.tarifaBase = 80;
     }
 }
+*/
