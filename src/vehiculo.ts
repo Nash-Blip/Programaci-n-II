@@ -1,5 +1,7 @@
 import {EstadoVehiculo} from "./estadoVehiculo";
 import { Tarifa } from "./Tarifa";
+import DatosMantenimiento from "./datosMantenimiento";
+import DatosEstadistica from "./datosEstadistica";
 
 export default abstract class Vehiculo{
     private numMatricula: number;
@@ -9,6 +11,8 @@ export default abstract class Vehiculo{
 
     constructor(protected logicaTarifa: Tarifa, protected datosMantenimiento: DatosMantenimiento, public datosEstadistica: DatosEstadistica){
         this.numMatricula = 0;
+        this.kilometro = 0;
+        this.tarifaBase = 0;
         this.estado = EstadoVehiculo.DISPONIBLE;
         this.logicaTarifa = undefined as unknown as Tarifa
     }
