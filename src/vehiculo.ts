@@ -1,19 +1,11 @@
-import { EstadoVehiculo } from "./estadoVehiculo";
-import DatosMantenimiento from "./DatosMantenimiento";
+import {EstadoVehiculo} from "./estadoVehiculo";
 import { Tarifa } from "./Tarifa";
-import DatosEstadistica from "./DatosEstadistica";
 
 export default abstract class Vehiculo{
-    private numMatricula: number;
-    private estado: EstadoVehiculo;
-    private kilometro: number;
-    protected tarifaBase: number;
-
-    constructor(protected logicaTarifa: Tarifa, private datosMantenimiento: DatosMantenimiento, private datosEstadistica: DatosEstadistica){
-        this.numMatricula = 0;
+    private logicaTarifa: Tarifa;
+    constructor(private numMatricula: number, private marcaAuto: string, private kilometro: number, private estado: EstadoVehiculo){
         this.estado = EstadoVehiculo.DISPONIBLE;
-        this.kilometro = 0;
-        this.tarifaBase = 0;
+        this.logicaTarifa = undefined as unknown as Tarifa
     }
 
     public setNumMatricula(value: number): void {
@@ -52,19 +44,7 @@ export default abstract class Vehiculo{
         return this.estado;
     }
 
-    public getTarifaBase(): number {
-        return this.tarifaBase;
-    }
-
-    public getLogicaTarifa(): Tarifa {
-        return this.logicaTarifa;
-    }
-
-    public setDatosMantenimiento(datos: DatosMantenimiento): void{
-        this.datosMantenimiento = datos;
-    }
-
-    public getDatosMantenimiento(): DatosMantenimiento {
-        return this.datosMantenimiento;
+    public getLogicaTarifa(){
+        return this.logicaTarifa
     }
 }
