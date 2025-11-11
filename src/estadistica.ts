@@ -1,4 +1,4 @@
-import DatosEstadistica from "./datosEstadistica";
+import DatosEstadistica from "./DatosEstadistica";
 import Vehiculo from "./vehiculo";
 
 export default class Estadistica {

@@ -9,27 +9,31 @@ export default class DatosEstadistica {
         this.costosMantenimiento = 0;
     }
 
-    public setCantidadDeVecesAlquilado(value: number): void {
-        this.cantidadDeVecesAlquilado = value;
+    public aumentarCantidadDeVecesAlquilado(): void {
+        this.cantidadDeVecesAlquilado += 1;
     }
 
     public getCantidadDeVecesAlquilado(): number {
         return this.cantidadDeVecesAlquilado;
     }
 
-    public setIngresosAlquiler(value: number): void {
-        this.ingresosAlquiler = value;
+    public aumentarIngresosAlquiler(value: number): void {
+        this.ingresosAlquiler += value;
     }
 
     public getIngresosAlquiler(): number {
         return this.ingresosAlquiler;
     }
 
-    public setCostosMantenimiento(value: number): void {
-        this.costosMantenimiento = value;
+    public aumentarCostosMantenimiento(value: number): void {
+        this.costosMantenimiento += value;
     }
 
     public getCostosMantenimiento(): number {
         return this.costosMantenimiento;
+    }
+
+    public calcularRentabilidad(){
+        return this.ingresosAlquiler - this.costosMantenimiento
     }
 }
