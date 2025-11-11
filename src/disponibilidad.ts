@@ -27,6 +27,6 @@ export default class Disponibilidad {
     const mesesTranscuMant = r.getVehiculo().getDatosMantenimiento().calculadoraFecha();
     const cantAlquileres = r.getVehiculo().getDatosMantenimiento().getAlquileresCantidad();
     
-    return kmDesdeUltimoMant > 10000 || mesesTranscuMant > 12 || cantAlquileres > 5;
+    return kmDesdeUltimoMant > 10000 || mesesTranscuMant > 12 || cantAlquileres % 5 === 0;
   }
 }

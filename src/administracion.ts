@@ -2,6 +2,7 @@ import Vehiculo from "./vehiculo";
 import Reserva from "./Reserva";
 import {EstadoVehiculo} from "./estadoVehiculo";
 import Disponibilidad from "./disponibilidad";
+import DatosEstadistica from "./datosEstadistica";
 
 export default class Administracion{
 
@@ -43,6 +44,7 @@ export default class Administracion{
 
     public entregarVehiculo(r: Reserva): void{
         r.getVehiculo().setEstadoEnAlquiler();
+        r.getVehiculo().getDatosEstadistica().aumentarCantidadDeVecesAlquilado();
 
         const lista = this.reservas.get(r.getVehiculo().getNumMatricula()) ?? [];
         lista.push(r);
