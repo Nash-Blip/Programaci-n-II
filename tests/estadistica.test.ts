@@ -1,7 +1,7 @@
 import Estadistica from "../src/estadistica";
 import { mock } from "jest-mock-extended";
 import Vehiculo from "../src/vehiculo";
-import DatosEstadistica from "../src/DatosEstadistica";
+import DatosEstadistica from "../src/datosEstadistica";
 
 describe("Tests Estadística", () =>{
     let estadistica: Estadistica;
