@@ -9,7 +9,7 @@ export default abstract class Vehiculo{
     private kilometro: number;
     protected tarifaBase: number;
 
-    constructor(protected logicaTarifa: Tarifa, private datosMantenimiento: DatosMantenimiento, private datosEstadistica: DatosEstadistica){
+    constructor(protected logicaTarifa: Tarifa, protected datosMantenimiento: DatosMantenimiento, public datosEstadistica: DatosEstadistica){
         this.numMatricula = 0;
         this.estado = EstadoVehiculo.DISPONIBLE;
         this.kilometro = 0;
@@ -56,6 +56,10 @@ export default abstract class Vehiculo{
         return this.tarifaBase;
     }
 
+    public setLogicaTarifa(logicaTarifa: Tarifa): void {
+        this.logicaTarifa = logicaTarifa;        
+    }
+
     public getLogicaTarifa(): Tarifa {
         return this.logicaTarifa;
     }
@@ -66,5 +70,13 @@ export default abstract class Vehiculo{
 
     public getDatosMantenimiento(): DatosMantenimiento {
         return this.datosMantenimiento;
+    }
+
+    public setDatosEstadistica(datos: DatosEstadistica): void {
+        this.datosEstadistica = datos;
+    }
+
+    public getDatosEstadistica(): DatosEstadistica {
+        return this.datosEstadistica;
     }
 }
