@@ -33,7 +33,7 @@ export default class DatosEstadistica {
         return this.costosMantenimiento;
     }
 
-    public calcularRentabilidad(){
-        return this.ingresosAlquiler - this.costosMantenimiento
+    public calcularRentabilidad(): number {
+        return this.getIngresosAlquiler() - this.getCostosMantenimiento();
     }
 }
