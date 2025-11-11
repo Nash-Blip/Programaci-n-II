@@ -1,12 +1,12 @@
-/*import Vehiculo from "./vehiculo";
+import Vehiculo from "./vehiculo";
 import TarifaSuv from "./TarifaSuv";
 import DatosMantenimiento from "./datosMantenimiento";
 import DatosEstadistica from "./datosEstadistica";
 
 export default class SUV extends Vehiculo{
     constructor(){
-        super(new TarifaSuv(), new DatosMantenimiento(0, new Date(), 0), new DatosEstadistica());
+        super();
         this.tarifaBase = 80;
+        this.logicaTarifa = new TarifaSuv()
     }
 }
-*/

@@ -1,4 +1,4 @@
-import DatosEstadistica from "../src/DatosEstadistica";
+import DatosEstadistica from "../src/datosEstadistica";
 
 describe('tests de la clase datos estadistica', () =>{
     let cantidadDeVecesAlquilado: number;
