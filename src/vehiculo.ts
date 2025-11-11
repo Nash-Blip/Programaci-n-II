@@ -14,7 +14,9 @@ export default abstract class Vehiculo{
         this.kilometro = 0;
         this.tarifaBase = 0;
         this.estado = EstadoVehiculo.DISPONIBLE;
-        this.logicaTarifa = undefined as unknown as Tarifa
+        this.logicaTarifa = undefined as unknown as Tarifa;
+        this.kilometro = 0;
+        this.tarifaBase = 0;
     }
 
     public setNumMatricula(value: number): void {
