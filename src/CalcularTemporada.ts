@@ -1,7 +1,7 @@
 import { Temporada } from "./Temporada";
 
 export default class CalcularTemporada{
-    public ObtenerTemporada(fecha: Date): Temporada{
+    private ObtenerTemporada(fecha: Date): Temporada{
         const mes = fecha.getMonth();
 
         if([11,0,2].includes(mes)){
@@ -18,9 +18,9 @@ export default class CalcularTemporada{
         switch(temporada){
             case Temporada.BAJA:
                 return tarifaBase * 0.9
-            case Temporada.MEDIA:
-                return tarifaBase * 1.2
             case Temporada.ALTA:
+                return tarifaBase * 1.2
+            case Temporada.MEDIA:
                 return tarifaBase
         }
   }
