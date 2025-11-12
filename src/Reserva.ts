@@ -1,27 +1,13 @@
 import Vehiculo from "./vehiculo";
 import CalcularKilometros from "./CalcularKilometros";
 export default class Reserva{
-    private idReserva: number;
-    private fechaInicio: Date;
-    private fechaFinalizacion: Date;
-    private vehiculo: Vehiculo;
-    private kmIniciales: number
-    private kmFinales: number
-    private calcularKilometros: CalcularKilometros = new CalcularKilometros()
-
-    constructor(idReserva: number,
-  fechaInicio: Date,
-  fechaFinalizacion: Date,
-  vehiculo: Vehiculo,
-  kmIniciales: number,
-  kmFinales: number){
-        this.idReserva = idReserva;
-        this.fechaInicio = fechaInicio;
-        this.fechaFinalizacion = fechaFinalizacion;
-        this.vehiculo = vehiculo;
-        this.kmIniciales= kmIniciales;
-        this.kmFinales = kmFinales; 
-    }
+    constructor(private idReserva: number,
+    private fechaInicio: Date,
+    private fechaFinalizacion: Date,
+    private vehiculo: Vehiculo,
+    private kmIniciales: number,
+    private kmFinales: number ,
+    private calcularKilometros: CalcularKilometros = new CalcularKilometros()){    }
 
 
     public getIdReserva():number {
