@@ -1,3 +1,4 @@
+import { EstadoVehiculo } from "./estadoVehiculo";
 import Vehiculo from "./vehiculo";
 
 export default class Estadistica {
@@ -50,5 +51,19 @@ export default class Estadistica {
         })
 
         return vehiculoMasRentable;
+    }
+
+    public porcentajeEnAlquiler(vehiculos: Map<number, Vehiculo>){
+        const vehiculosArray = Array.from(vehiculos.values());
+        const totalVehiculos = vehiculosArray.length;
+        const totalEnAlquiler = vehiculosArray.filter(v => v["estado"] === EstadoVehiculo.EN_ALQUILER).length;
+
+        if(vehiculosArray.length == 0){
+            throw new Error ("No hay vehiculos en la flota")
+        }
+        
+        const porcentajeEnAlquiler = (totalEnAlquiler / totalVehiculos) * 100
+
+        return porcentajeEnAlquiler
     }
 }
