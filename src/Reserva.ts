@@ -33,7 +33,10 @@ export default class Reserva{
     }
     
     public calcularCantidadDias(): number{
-        const diferencia = this.fechaFinalizacion.getTime() - this.fechaInicio.getTime();
+         const diferencia = this.fechaFinalizacion.getTime() - this.fechaInicio.getTime();
+        if(diferencia < 0){
+            throw new Error("La fecha de inicio no puede ser posterior a la fecha de finalización")
+        }
         return Math.ceil(diferencia /(1000 * 60 * 60 * 24)); 
     }
 
