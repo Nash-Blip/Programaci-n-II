@@ -19,7 +19,7 @@ export default class TarifaCompacto implements Tarifa{
     }
 
     private cargoAdicional(r: Reserva): number{
-        if(this.calcularKm.promedioKmDiarios(r.calcularCantidadDias()) > 100){
+        if(this.calcularKm.promedioKmDiarios(r.getKmIniciales(), r.calcularCantidadDias()) > 100){
             return 0.15 * this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales())
         }else{
             return 0
