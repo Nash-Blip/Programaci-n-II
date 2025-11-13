@@ -15,8 +15,9 @@ class Sedan extends Vehiculo{}
 class Suv extends Vehiculo{}
 class Compacto extends Vehiculo{}
 
-class Temporada{
-    +getTemporada(): string
+class CalcularTemporada{
+    -getTemporada(): string
+    +tarifaBaseTemporada(): number
 }
 
 class DatosEstadistica{
@@ -46,7 +47,8 @@ class DatosMantenimiento{
 
 interface Tarifa{
     calcularKm: CalcularKilometros
-    calcularTarifa(reserva: Reserva): number
+    calcularTemporada: CalcularTemporada
+    +calcularTarifa(reserva: Reserva): number
 }
 
 class tarifaSuv implements Tarifa{}
@@ -98,12 +100,11 @@ class Disponibilidad{
 }
 
 class Estadistica{
-    -vehiculos: Map<Vehiculo>
-    + vehiculoMasAlquilado(): Vehiculo
-    + menosRentabilidad(): Vehiculo
-    + mayorRentabilidad(): Vehiculo
-    + cantidadEnAlquiler(): number
-    + generarReporte(): void
+    + vehiculoMasAlquilado(vehiculos: Map<Vehiculo>): Vehiculo
+    + menosRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
+    + mayorRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
+    + porcentajeEnAlquiler(vehiculos: Map<Vehiculo>): number
+    + generarReporte(vehiculos: Map<Vehiculo>): void
 }
 
 
@@ -116,6 +117,9 @@ Administracion *-- Disponibilidad
 Administracion <-- Reserva
 Vehiculo *-u- DatosEstadistica
 Vehiculo *-l- DatosMantenimiento
-Estadistica *-l- Vehiculo
+Vehiculo *-r- Estadistica
+CalcularTemporada <-- Tarifa
+Vehiculo *-- Mantenimiento
+Administracion <-- Estadistica
 
 @enduml
