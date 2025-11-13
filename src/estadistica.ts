@@ -66,4 +66,8 @@ export default class Estadistica {
 
         return porcentajeEnAlquiler
     }
+
+    public generarReporte(vehiculos: Map<number, Vehiculo>): void{
+        
+    }
 }
