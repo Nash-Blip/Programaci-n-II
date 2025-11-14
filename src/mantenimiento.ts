@@ -11,8 +11,8 @@ export default class Mantenimiento{
 
     /**
     * Crea un nuevo mantenimiento para un vehículo.
-    * @param vehiculo - Vehículo que entra en mantenimiento.
-    * @param fechaInicio - Fecha de inicio del mantenimiento (por defecto, ahora).
+    * @param {Vehiculo} vehiculo - Vehículo que entra en mantenimiento.
+    * @param {Date} fechaInicio - Fecha de inicio del mantenimiento (por defecto, ahora).
     */
     constructor(vehiculo: Vehiculo, fechaInicio: Date = new Date()){
         this.vehiculo = vehiculo;
@@ -22,8 +22,8 @@ export default class Mantenimiento{
 
     /**
     * Calcula cuántas horas pasaron desde que inició el mantenimiento.
-    * @param fechaActual - Fecha contra la cual se compara (por defecto, ahora).
-    * @returns Cantidad de horas transcurridas.
+    * @param {Date} fechaActual - Fecha contra la cual se compara (por defecto, ahora).
+    * @returns {number} Cantidad de horas transcurridas.
     */
     public horasTranscurridas(fechaActual: Date = new Date()): number{
         const ms = fechaActual.getTime() - this.fechaInicio.getTime();
@@ -33,8 +33,8 @@ export default class Mantenimiento{
 
     /**
     * Indica si ya pasaron las 24 horas de mantenimiento.
-    * @param fechaActual - Fecha actual para el cálculo.
-    * @returns True si las 24 horas ya transcurrieron.
+    * @param {Date} fechaActual - Fecha actual para el cálculo.
+    * @returns {boolean} True si las 24 horas ya transcurrieron.
     */
     public informeHorasTranscurridas(fechaActual: Date = new Date()): boolean{
         const msTranscurridos = fechaActual.getTime() - this.fechaInicio.getTime();
@@ -44,7 +44,7 @@ export default class Mantenimiento{
     /**
     * Finaliza el mantenimiento si ya pasaron las 24 horas,
     * y vuelve el vehículo al estado DISPONIBLE.
-    * @param fechaActual - Fecha actual para el cálculo.
+    * @param {Date} fechaActual - Fecha actual para el cálculo.
     */
     public finalizar(fechaActual: Date = new Date()): void{
         if(this.informeHorasTranscurridas(fechaActual)){

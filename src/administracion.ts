@@ -42,9 +42,9 @@ export default class Administracion{
     
     /**
     * Procesa una reserva verificando disponibilidad y estado del vehículo.
-    * @param r - Reserva a procesar.
-    * @returns True si la reserva puede realizarse, false si existe solapamiento.
-    * @throws Error si el vehículo no existe o no está disponible.
+    * @param {Reserva} r - Reserva a procesar.
+    * @returns {boolean} True si la reserva puede realizarse, false si existe solapamiento.
+    * @throws {Error} Si el vehículo no existe o no está disponible.
     */
     public procesarReserva(r: Reserva): boolean{
         const vehiculo = this.obtenerVehiculoDeReserva(r);
@@ -65,9 +65,9 @@ export default class Administracion{
 
     /**
      * Busca el vehiculo en la flota de vehiculos
-     * @param r - Reserva que contiene el vehiculo solicitado
-     * @returns Vehiculo solicitado por la reserva
-     * @throws Error si  el vehiculo no se encuentra registrado en la flota
+     * @param {Reserva} r - Reserva que contiene el vehiculo solicitado
+     * @returns {Vehiculo} solicitado por la reserva
+     * @throws {Error} Si  el vehiculo no se encuentra registrado en la flota
      */
     private obtenerVehiculoDeReserva(r: Reserva): Vehiculo{
         const id = r.getVehiculo().getNumMatricula();
@@ -83,8 +83,8 @@ export default class Administracion{
     * Verifica si el vehiculo se encuentra en mantenimiento.
     * Si no lo esta, retorna sin más. 
     * En caso de estarlo verifica si pasaron las 24hs desde que entro al mismo.
-    * @param vehiculo - Vehículo que se necesita saber si esta en mantenimiento o no.
-    * @param fechaActual - Fecha actual para el cálculo.
+    * @param {Vehiculo} vehiculo - Vehículo que se necesita saber si esta en mantenimiento o no.
+    * @param {Date} fechaActual - Fecha actual para el cálculo.
     */
     private actualizarMantenimiento(vehiculo: Vehiculo, fechaActual: Date = new Date()): void{
         const mantenimiento = this.mantenimientos.get(vehiculo.getNumMatricula());
@@ -101,7 +101,7 @@ export default class Administracion{
 
     /**
     * Entrega un vehículo y lo registra como alquilado.
-    * @param r - Reserva correspondiente al alquiler.
+    * @param {Reserva} r - Reserva correspondiente al alquiler.
     */
     public entregarVehiculo(r: Reserva): void{
         r.getVehiculo().setEstadoEnAlquiler();
@@ -117,7 +117,7 @@ export default class Administracion{
     /**
     * Recibe un vehículo devuelto. Actualiza estadísticas,
     * determina si requiere mantenimiento y actualiza su estado.
-    * @param r - Reserva del vehículo devuelto.
+    * @param {Reserva} r - Reserva del vehículo devuelto.
     */
     public recibirVehiculo(r: Reserva): void{
         const vehiculo = r.getVehiculo();
@@ -138,7 +138,7 @@ export default class Administracion{
 
     /**
     * Genera un reporte estadístico completo de toda la flota.
-    * @returns Reporte en formato string.
+    * @returns {string} Reporte en formato string.
     */
     public recibirReporte(): string{
         return this.controladorDeEstadistica.generarReporte(this.vehiculos);

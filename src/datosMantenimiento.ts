@@ -7,9 +7,9 @@ import moment from "moment";
 export default class DatosMantenimiento{
 
     /**
-     * @param kmUltimoMantenimiento - Kilómetros al momento del último mantenimiento.
-     * @param fechaUltimoMantenimiento - Fecha del último mantenimiento.
-     * @param alquileresCantidad - Cantidad de alquileres desde la última revisión.
+     * @param {number} kmUltimoMantenimiento - Kilómetros al momento del último mantenimiento.
+     * @param {Date} fechaUltimoMantenimiento - Fecha del último mantenimiento.
+     * @param {number} alquileresCantidad - Cantidad de alquileres desde la última revisión.
      */
     constructor(
         private kmUltimoMantenimiento: number,
@@ -43,7 +43,7 @@ export default class DatosMantenimiento{
     }
      /**
     * Calcula la cantidad de meses desde el último mantenimiento.
-    * @returns Meses transcurridos.
+    * @returns {number} Meses transcurridos.
     */
     public calculadoraFecha(): number{
         return moment().diff(this.fechaUltimoMantenimiento, "months");
