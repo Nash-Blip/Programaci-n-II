@@ -5,6 +5,10 @@ import Disponibilidad from "./disponibilidad";
 import Estadistica from "./estadistica";
 import Mantenimiento from "./mantenimiento";
 
+/**
+* Clase principal del sistema que gestiona vehículos, reservas,
+* disponibilidad, mantenimiento y estadísticas.
+*/
 export default class Administracion{
 
     private vehiculos: Map<number, Vehiculo>;
@@ -13,6 +17,11 @@ export default class Administracion{
     private verificadorDisponibilidad: Disponibilidad;
     private controladorDeEstadistica: Estadistica;
 
+    /**
+    * Crea una instancia de la clase Administracion,
+    * inicializando los mapas de vehículos, reservas y mantenimientos,
+    * además de los controladores de disponibilidad y estadísticas.
+    */
     constructor(){
         this.vehiculos = new Map();
         this.reservas = new Map();
@@ -21,14 +30,22 @@ export default class Administracion{
         this.controladorDeEstadistica = new Estadistica();
     }
 
+    /** Retorna la flota de vehículos. */
     public getVehiculos(): Map<number, Vehiculo> {
         return this.vehiculos;
     }
 
+    /** Retorna las reservas de un vehículo. */
     public getReservas(): Map<number, Reserva[]> {
         return this.reservas;
     }
     
+    /**
+    * Procesa una reserva verificando disponibilidad y estado del vehículo.
+    * @param r - Reserva a procesar.
+    * @returns True si la reserva puede realizarse, false si existe solapamiento.
+    * @throws Error si el vehículo no existe o no está disponible.
+    */
     public procesarReserva(r: Reserva): boolean{
         const vehiculo = this.obtenerVehiculoDeReserva(r);
 
@@ -46,6 +63,12 @@ export default class Administracion{
         return this.verificadorDisponibilidad.estaDisponible(r, reservasDelVehiculo);
     }
 
+    /**
+     * Busca el vehiculo en la flota de vehiculos
+     * @param r - Reserva que contiene el vehiculo solicitado
+     * @returns Vehiculo solicitado por la reserva
+     * @throws Error si  el vehiculo no se encuentra registrado en la flota
+     */
     private obtenerVehiculoDeReserva(r: Reserva): Vehiculo{
         const id = r.getVehiculo().getNumMatricula();
         const vehiculo = this.vehiculos.get(id);
@@ -56,6 +79,13 @@ export default class Administracion{
         return vehiculo;
     }
     
+    /**
+    * Verifica si el vehiculo se encuentra en mantenimiento.
+    * Si no lo esta, retorna sin más. 
+    * En caso de estarlo verifica si pasaron las 24hs desde que entro al mismo.
+    * @param vehiculo - Vehículo que se necesita saber si esta en mantenimiento o no.
+    * @param fechaActual - Fecha actual para el cálculo.
+    */
     private actualizarMantenimiento(vehiculo: Vehiculo, fechaActual: Date = new Date()): void{
         const mantenimiento = this.mantenimientos.get(vehiculo.getNumMatricula());
 
@@ -68,6 +98,11 @@ export default class Administracion{
             this.mantenimientos.delete(vehiculo.getNumMatricula());
         }
     }
+
+    /**
+    * Entrega un vehículo y lo registra como alquilado.
+    * @param r - Reserva correspondiente al alquiler.
+    */
     public entregarVehiculo(r: Reserva): void{
         r.getVehiculo().setEstadoEnAlquiler();
         r.getVehiculo().getDatosEstadistica().aumentarCantidadDeVecesAlquilado();
@@ -79,6 +114,11 @@ export default class Administracion{
         this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
     }
 
+    /**
+    * Recibe un vehículo devuelto. Actualiza estadísticas,
+    * determina si requiere mantenimiento y actualiza su estado.
+    * @param r - Reserva del vehículo devuelto.
+    */
     public recibirVehiculo(r: Reserva): void{
         const vehiculo = r.getVehiculo();
         const datosMant = vehiculo.getDatosMantenimiento();
@@ -96,6 +136,10 @@ export default class Administracion{
         this.vehiculos.set(r.getVehiculo().getNumMatricula(), r.getVehiculo());
     }
 
+    /**
+    * Genera un reporte estadístico completo de toda la flota.
+    * @returns Reporte en formato string.
+    */
     public recibirReporte(): string{
         return this.controladorDeEstadistica.generarReporte(this.vehiculos);
     }
