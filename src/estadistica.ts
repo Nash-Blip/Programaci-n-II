@@ -1,59 +1,67 @@
 import { EstadoVehiculo } from "./estadoVehiculo";
+import Sedan from "./sedan";
 import Vehiculo from "./vehiculo";
 
 export default class Estadistica {
-    private vehiculos: Map<number, Vehiculo>
+    private masAlquilado: Vehiculo;
+    private menosAlquilado: Vehiculo; 
+    private masRentable: Vehiculo;
+    private menosRentable: Vehiculo; 
+
     constructor(){
-        this.vehiculos = new Map();
-    }
+        this.masAlquilado = new Sedan()
+        this.menosAlquilado = new Sedan()
+        this.masRentable = new Sedan()
+        this.menosRentable = new Sedan()
 
-    public agregarVehiculos(matricula: number, vehiculo: Vehiculo): void {
-        this.vehiculos.set(matricula, vehiculo);
     }
+    private vehiculoMenosAlquilado(vehiculos: Map<number, Vehiculo>): Vehiculo{
+        if(vehiculos.size ===0){
+            throw new Error ("No hay vehiculos en la flota")
+        }
 
-    public vehiculoMasAlquilado(): Vehiculo | undefined {
-        let vehiculoMasAlquilado: Vehiculo | undefined = undefined
-        let mayorCantidadDeVecesAlquilado = -999999999
-        this.vehiculos.forEach((vehiculo, numMatricula) =>{
+        vehiculos.forEach((vehiculo, number)=>{
             let cantidadDeVecesAlquilado = vehiculo.datosEstadistica.getCantidadDeVecesAlquilado();
-            if(cantidadDeVecesAlquilado > mayorCantidadDeVecesAlquilado){
-                mayorCantidadDeVecesAlquilado = cantidadDeVecesAlquilado;
-                vehiculoMasAlquilado = vehiculo;
+            if(cantidadDeVecesAlquilado < this.menosAlquilado.datosEstadistica.getCantidadDeVecesAlquilado()){
+                this.menosAlquilado = vehiculo;
             }
         })
-
-        return vehiculoMasAlquilado;
+        return this.menosAlquilado
     }
 
-    public menosRentabilidad(): Vehiculo | undefined {
-        let vehiculoMenosRentable: Vehiculo | undefined = undefined;
-        let rentabilidadMinima = 999999999;
-        this.vehiculos.forEach((vehiculo, numMatricula) =>{
+    private vehiculoMasAlquilado(vehiculos: Map<number, Vehiculo>): Vehiculo{
+        vehiculos.forEach((vehiculo, numMatricula) =>{
+            let cantidadDeVecesAlquilado = vehiculo.datosEstadistica.getCantidadDeVecesAlquilado();
+            if(cantidadDeVecesAlquilado > this.masAlquilado.datosEstadistica.getCantidadDeVecesAlquilado()){
+                this.masAlquilado = vehiculo
+            }
+        })
+        return this.masAlquilado;
+    }
+
+    private menosRentabilidad(vehiculos: Map<number, Vehiculo>): Vehiculo{
+        vehiculos.forEach((vehiculo, number) =>{
             let rentabilidad = vehiculo.datosEstadistica.calcularRentabilidad();
-            if(rentabilidad < rentabilidadMinima){
-                rentabilidadMinima = rentabilidad;
-                vehiculoMenosRentable = vehiculo;
+            if(rentabilidad < this.menosRentable.datosEstadistica.calcularRentabilidad()){
+                this.menosRentable = vehiculo
             }
         })
 
-        return vehiculoMenosRentable;
+        return this.menosRentable;
     }
 
-    public mayorRentabilidad(): Vehiculo | undefined {
-        let vehiculoMasRentable: Vehiculo | undefined = undefined;
-        let rentabilidadMaxima = -999999999;
-        this.vehiculos.forEach((vehiculo, numMatricula) =>{
+    private mayorRentabilidad(vehiculos: Map<number, Vehiculo>): Vehiculo{
+        vehiculos.forEach((vehiculo, number) =>{
             let rentabilidad = vehiculo.datosEstadistica.calcularRentabilidad();
-            if(rentabilidad > rentabilidadMaxima){
-                rentabilidadMaxima = rentabilidad;
-                vehiculoMasRentable = vehiculo;
+            if(rentabilidad > this.menosRentable.datosEstadistica.calcularRentabilidad()){
+                this.menosRentable = vehiculo
             }
         })
 
-        return vehiculoMasRentable;
+        return this.masRentable;
     }
 
-    public porcentajeEnAlquiler(vehiculos: Map<number, Vehiculo>){
+    private porcentajeEnAlquiler(vehiculos: Map<number, Vehiculo>): string{
         const vehiculosArray = Array.from(vehiculos.values());
         const totalVehiculos = vehiculosArray.length;
         const totalEnAlquiler = vehiculosArray.filter(v => v["estado"] === EstadoVehiculo.EN_ALQUILER).length;
@@ -63,11 +71,23 @@ export default class Estadistica {
         }
         
         const porcentajeEnAlquiler = (totalEnAlquiler / totalVehiculos) * 100
+        const porcentaje = porcentajeEnAlquiler.toString() + "%"
 
-        return porcentajeEnAlquiler
+        return porcentaje
     }
 
-    public generarReporte(vehiculos: Map<number, Vehiculo>): void{
-        
+    public generarReporte(vehiculos: Map<number, Vehiculo>): string{
+
+        const masAlquilado = this.vehiculoMasAlquilado(vehiculos);
+        const masRentable = this.mayorRentabilidad(vehiculos);
+        const menosRentable = this.menosRentabilidad(vehiculos);
+        const porcentaje = this.porcentajeEnAlquiler(vehiculos);
+        return `
+        ===== REPORTE DE ESTADISTICAS =====
+        Vehiculo mas alquilado: ${masAlquilado}
+        Vehiculo mas rentable: ${masRentable}
+        Vehiculo menos rentable: ${menosRentable}
+        Porcentaje en alquiler: ${porcentaje}
+        `
     }
 }
