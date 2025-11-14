@@ -15,7 +15,7 @@ export default class Estadistica {
         this.menosRentable = new Sedan()
 
     }
-    private vehiculoMenosAlquilado(vehiculos: Map<number, Vehiculo>): Vehiculo{
+    public vehiculoMenosAlquilado(vehiculos: Map<number, Vehiculo>): Vehiculo{
         if(vehiculos.size ===0){
             throw new Error ("No hay vehiculos en la flota")
         }
@@ -29,7 +29,7 @@ export default class Estadistica {
         return this.menosAlquilado
     }
 
-    private vehiculoMasAlquilado(vehiculos: Map<number, Vehiculo>): Vehiculo{
+    public vehiculoMasAlquilado(vehiculos: Map<number, Vehiculo>): Vehiculo{
         vehiculos.forEach((vehiculo, numMatricula) =>{
             let cantidadDeVecesAlquilado = vehiculo.datosEstadistica.getCantidadDeVecesAlquilado();
             if(cantidadDeVecesAlquilado > this.masAlquilado.datosEstadistica.getCantidadDeVecesAlquilado()){
@@ -39,7 +39,7 @@ export default class Estadistica {
         return this.masAlquilado;
     }
 
-    private menosRentabilidad(vehiculos: Map<number, Vehiculo>): Vehiculo{
+    public menosRentabilidad(vehiculos: Map<number, Vehiculo>): Vehiculo{
         vehiculos.forEach((vehiculo, number) =>{
             let rentabilidad = vehiculo.datosEstadistica.calcularRentabilidad();
             if(rentabilidad < this.menosRentable.datosEstadistica.calcularRentabilidad()){
@@ -50,7 +50,7 @@ export default class Estadistica {
         return this.menosRentable;
     }
 
-    private mayorRentabilidad(vehiculos: Map<number, Vehiculo>): Vehiculo{
+    public mayorRentabilidad(vehiculos: Map<number, Vehiculo>): Vehiculo{
         vehiculos.forEach((vehiculo, number) =>{
             let rentabilidad = vehiculo.datosEstadistica.calcularRentabilidad();
             if(rentabilidad > this.menosRentable.datosEstadistica.calcularRentabilidad()){
@@ -61,7 +61,7 @@ export default class Estadistica {
         return this.masRentable;
     }
 
-    private porcentajeEnAlquiler(vehiculos: Map<number, Vehiculo>): string{
+    public porcentajeEnAlquiler(vehiculos: Map<number, Vehiculo>): string{
         const vehiculosArray = Array.from(vehiculos.values());
         const totalVehiculos = vehiculosArray.length;
         const totalEnAlquiler = vehiculosArray.filter(v => v["estado"] === EstadoVehiculo.EN_ALQUILER).length;

@@ -8,6 +8,8 @@ describe('Test clase TarifaCompacto', () => {
     let tarifaSuv: TarifaSuv;
     let mockCalcularKm: any;
     let mockReserva: any;
+    let mockEstrategia:any;
+    let mockSeteador: any;
 
     beforeEach(() => {
     tarifaCompacto = new TarifaCompacto();
@@ -27,15 +29,27 @@ describe('Test clase TarifaCompacto', () => {
       calculadoraKilometros: mockCalcularKm
     };
 
+    mockEstrategia = {
+        tarifaBaseTemporada: jest.fn()
+    }
+
+    mockSeteador = {
+        setEstrategiaTemporada: jest.fn()
+    }
 
     tarifaCompacto.calcularKm = mockCalcularKm;
+    tarifaCompacto.seteadorEstrategia = mockSeteador;
     tarifaSedan.calcularKm = mockCalcularKm;
+    tarifaSedan.seteadorEstrategia = mockSeteador;
     tarifaSuv.calcularKm = mockCalcularKm;
+    tarifaSuv.seteadorEstrategia = mockSeteador;
     });
 
     test('Test clase TarifaCompacto: metodo calcularTarifa promedio de kilómetros < 100 → no se aplica cargo adicional', () => {
         mockCalcularKm.promedioKmDiarios.mockReturnValue(99);
         mockReserva.calcularCantidadDias.mockReturnValue(2);
+        mockSeteador.setEstrategiaTemporada.mockReturnValue(mockEstrategia);
+        mockEstrategia.tarifaBaseTemporada.mockReturnValue(30)
 
         const total = tarifaCompacto.calcularTarifa(mockReserva);
 
@@ -48,6 +62,8 @@ describe('Test clase TarifaCompacto', () => {
         mockCalcularKm.calcularKmTotales.mockReturnValue(400);
         mockReserva.getKmIniciales.mockReturnValue(1000);
         mockReserva.getKmFinales.mockReturnValue(1400);
+        mockSeteador.setEstrategiaTemporada.mockReturnValue(mockEstrategia);
+        mockEstrategia.tarifaBaseTemporada.mockReturnValue(30)
 
         const total = tarifaCompacto.calcularTarifa(mockReserva);
 
@@ -59,6 +75,8 @@ describe('Test clase TarifaCompacto', () => {
         mockCalcularKm.calcularKmTotales.mockReturnValue(100);
         mockReserva.getKmIniciales.mockReturnValue(500);
         mockReserva.getKmFinales.mockReturnValue(600);
+        mockSeteador.setEstrategiaTemporada.mockReturnValue(mockEstrategia);
+        mockEstrategia.tarifaBaseTemporada.mockReturnValue(50);
 
         const total = tarifaSedan.calcularTarifa(mockReserva);
         expect(total).toBe(520);
@@ -69,6 +87,8 @@ describe('Test clase TarifaCompacto', () => {
         mockCalcularKm.calcularKmTotales.mockReturnValue(50);
         mockReserva.getKmIniciales.mockReturnValue(1100);
         mockReserva.getKmFinales.mockReturnValue(1150);
+        mockSeteador.setEstrategiaTemporada.mockReturnValue(mockEstrategia);
+        mockEstrategia.tarifaBaseTemporada.mockReturnValue(80);
 
         const total = tarifaSuv.calcularTarifa(mockReserva);
         expect(total).toBe(190)
@@ -79,6 +99,8 @@ describe('Test clase TarifaCompacto', () => {
         mockCalcularKm.calcularKmTotales.mockReturnValue(1200);
         mockReserva.getKmIniciales.mockReturnValue(500);
         mockReserva.getKmFinales.mockReturnValue(1700);
+        mockSeteador.setEstrategiaTemporada.mockReturnValue(mockEstrategia);
+        mockEstrategia.tarifaBaseTemporada.mockReturnValue(80)
 
         const total = tarifaSuv.calcularTarifa(mockReserva);
         expect(total).toBe(1060);
