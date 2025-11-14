@@ -6,16 +6,19 @@ recorrido si se superan los 100 km por día de alquiler.
 import { Tarifa } from "./Tarifa";
 import CalcularKilometros from "./CalcularKilometros";
 import Reserva from "./Reserva";
-import CalcularTemporada from "./CalcularTemporada";
+import CalcularTemporada from "./EstrategiaSegunTemporada";
 import { Temporada } from "./Temporada";
+import EstrategiaSegunTemporada from "./EstrategiaSegunTemporada";
+import { EstrategiaTemporada } from "./EstrategiaTemporada";
 
 export default class TarifaCompacto implements Tarifa{
     private tarifaBase = 30
     calcularKm: CalcularKilometros = new CalcularKilometros();
-    calcularTemporada: CalcularTemporada = new CalcularTemporada()
+    seteadorEstrategia: EstrategiaSegunTemporada = new EstrategiaSegunTemporada();
 
     public calcularTarifa(r: Reserva): number {
-        return (this.calcularTemporada.tarifaBaseTemporada(this.tarifaBase, r.getFechaInicio()) * r.calcularCantidadDias()) + this.cargoAdicional(r)
+        const estrategia = this.seteadorEstrategia.setEstrategiaTemporada(r.getFechaInicio())
+        return (estrategia.tarifaBaseTemporada(this.tarifaBase) * r.calcularCantidadDias()) + this.cargoAdicional(r)
     }
 
     private cargoAdicional(r: Reserva): number{

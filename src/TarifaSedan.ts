@@ -6,15 +6,22 @@ recorrido, sin límite diario.
 import { Tarifa } from "./Tarifa";
 import CalcularKilometros from "./CalcularKilometros";
 import Reserva from "./Reserva";
-import CalcularTemporada from "./CalcularTemporada";
+import CalcularTemporada from "./EstrategiaSegunTemporada";
+import { Temporada } from "./Temporada";
+import EstrategiaSegunTemporada from "./EstrategiaSegunTemporada";
+import { EstrategiaTemporada } from "./EstrategiaTemporada";
 
 export default class TarifaSedan implements Tarifa{
     private tarifaBase = 50
     calcularKm: CalcularKilometros = new CalcularKilometros();
-    calcularTemporada: CalcularTemporada = new CalcularTemporada();
+    seteadorEstrategia: EstrategiaSegunTemporada = new EstrategiaSegunTemporada();
 
     public calcularTarifa(r: Reserva): number{
-        return (this.calcularTemporada.tarifaBaseTemporada(this.tarifaBase, r.getFechaInicio()) * r.calcularCantidadDias()) + this.calcularKm.calcularKmTotales(r.getKmIniciales(), r.getKmFinales()) * 0.2
+        const estrategia = this.seteadorEstrategia.setEstrategiaTemporada(r.getFechaInicio())
+
+        return (estrategia.tarifaBaseTemporada(this.tarifaBase) * 
+        r.calcularCantidadDias()) + this.calcularKm.calcularKmTotales(r.getKmIniciales(), 
+        r.getKmFinales()) * 0.2
     }
 
 }
