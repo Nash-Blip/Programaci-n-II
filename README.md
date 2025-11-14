@@ -1,5 +1,5 @@
 Sistema de gestión para una empresa de alquiler de vehículos.
-Permite administrar los vehículos, registrar reservas, controlar su disponibilidad coordinando diferentes fechas y calcular el costo final del alquiler según los días, la temporada y los kilómetros recorridos.
+Permite administrar los vehículos, registrar reservas, controlar su disponibilidad coordinando diferentes fechas y calculando el costo final del alquiler según los días, la temporada y los kilómetros recorridos.
 
 A su vez, la aplicación controla el estado de cada vehículo, registrando si se encuentra disponible, alquilado o en mantenimiento. Este último estado es determinado automáticamente por el sistema y bloquea temporalmente el vehículo cuando corresponde.
 
