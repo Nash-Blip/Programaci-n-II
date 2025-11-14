@@ -20,8 +20,8 @@ export default class DatosMantenimiento{
     public getFechaUltimoMant(): Date{
         return this.fechaUltimoMantenimiento;
     }
-    public setAlquileresCantidad(value: number): void{
-        this.alquileresCantidad = value;
+    public aumentarCantidadAlquileres(): void{
+        this.alquileresCantidad += 1;
     }
     public getAlquileresCantidad(): number{
         return this.alquileresCantidad;

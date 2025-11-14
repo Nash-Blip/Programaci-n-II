@@ -8,6 +8,15 @@ import DatosMantenimiento from "../src/datosMantenimiento";
 jest.mock("../src/disponibilidad");
 
 const DisponibilidadMock = Disponibilidad as jest.MockedClass<typeof Disponibilidad>;
+const generarReporteMock = jest.fn();
+
+jest.mock("../src/estadistica", () => ({
+  __esModule: true,
+  default: class Estadistica {
+    constructor(_: Map<number, any>) {}
+    public generarReporte = generarReporteMock;
+  },
+}));
 
 function crearVehiculoMock(): jest.Mocked<Vehiculo> {
   const datosEstadistica = {
@@ -267,4 +276,15 @@ describe("Administracion", () => {
 
     expect(precio).toBe(1234);
   });
+
+  test("recibirReporte delega en Estadistica y devuelve su resultado", () => {
+  const reporteEsperado = "REPORTE DE PRUEBA";
+
+  generarReporteMock.mockReturnValue(reporteEsperado);
+
+  const resultado = admin.recibirReporte();
+
+  expect(generarReporteMock).toHaveBeenCalledTimes(1);
+  expect(resultado).toBe(reporteEsperado);
+});
 });
