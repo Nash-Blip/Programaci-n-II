@@ -5,9 +5,10 @@ export default class Reserva{
     private fechaInicio: Date;
     private fechaFinalizacion: Date;
     private vehiculo: Vehiculo;
-    private kmIniciales: number
-    private kmFinales: number
-    private calcularKilometros: CalcularKilometros = new CalcularKilometros()
+    private kmIniciales: number;
+    private kmFinales: number;
+    private calcularKilometros: CalcularKilometros = new CalcularKilometros();
+    private mantenimientoRealizado: boolean;
 
     constructor(idReserva: number,
   fechaInicio: Date,
@@ -20,7 +21,8 @@ export default class Reserva{
         this.fechaFinalizacion = fechaFinalizacion;
         this.vehiculo = vehiculo;
         this.kmIniciales= kmIniciales;
-        this.kmFinales = kmFinales; 
+        this.kmFinales = kmFinales;
+        this.mantenimientoRealizado = false;
     }
 
 
@@ -44,6 +46,12 @@ export default class Reserva{
     }
     public setKmFinales(km: number):void{
         this.kmFinales = km;
+    }
+    public marcarMantenimiento():void{
+        this.mantenimientoRealizado = true;
+    }
+    public tuvoMantenimiento(): boolean{
+        return this.mantenimientoRealizado;
     }
     
     public calcularCantidadDias(): number{
