@@ -1,7 +1,7 @@
 import Vehiculo from "./vehiculo";
 
 /**
-* Representa un proceso de mantenimiento de un vehículo.
+* Clase que representa un proceso de mantenimiento de un vehículo.
 * Bloquea el vehículo durante 24 horas y permite consultar si el tiempo ya finalizó.
 */
 export default class Mantenimiento{
