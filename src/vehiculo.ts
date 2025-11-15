@@ -14,6 +14,8 @@ export default abstract class Vehiculo{
 
     constructor(){
         this.numMatricula = 0;
+        this.kilometro = 0;
+        this.tarifaBase = 0;
         this.estado = EstadoVehiculo.DISPONIBLE;
         this.logicaTarifa = undefined as unknown as Tarifa;
         this.kilometro = 0;

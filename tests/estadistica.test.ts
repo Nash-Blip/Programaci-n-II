@@ -1,48 +1,125 @@
 import Estadistica from "../src/estadistica";
-import { mock } from "jest-mock-extended";
 import Vehiculo from "../src/vehiculo";
 import DatosEstadistica from "../src/datosEstadistica";
+import { EstadoVehiculo } from "../src/estadoVehiculo";
 
 describe("Tests Estadística", () =>{
     let estadistica: Estadistica;
+    let mockDatosEstadistica: any;
+    const mockVehiculo = (vecesAlquilado: number, rentabilidad: number, matricula?: number) => ({
+          getNumMatricula: jest.fn().mockReturnValue(matricula),
+          datosEstadistica: {
+            getCantidadDeVecesAlquilado: jest.fn().mockReturnValue(vecesAlquilado),
+            calcularRentabilidad: jest.fn().mockReturnValue(rentabilidad)
+          }
+    }) as unknown as Vehiculo;
 
-    let vehiculoUno = mock<Vehiculo>();
-    let vehiculoDos = mock<Vehiculo>();
-    let vehiculoTres = mock<Vehiculo>();
-
-    let vehiculoUnoDatos = mock<DatosEstadistica>();
-    let vehiculoDosDatos = mock<DatosEstadistica>();
-    let vehiculoTresDatos = mock<DatosEstadistica>();
+    const mockVehiculoEstado = (estado: EstadoVehiculo) => ({
+      estado
+    })as unknown as Vehiculo;
 
     beforeEach(()=>{
-        estadistica = new Estadistica();
-
-        vehiculoUno.datosEstadistica = vehiculoUnoDatos;
-        vehiculoDos.datosEstadistica = vehiculoDosDatos;
-        vehiculoTres.datosEstadistica = vehiculoTresDatos;
-
-        vehiculoUnoDatos.getCantidadDeVecesAlquilado.mockReturnValue(10);
-        vehiculoDosDatos.getCantidadDeVecesAlquilado.mockReturnValue(8);
-        vehiculoTresDatos.getCantidadDeVecesAlquilado.mockReturnValue(15);
-
-        vehiculoUnoDatos.calcularRentabilidad.mockReturnValue(50)
-        vehiculoDosDatos.calcularRentabilidad.mockReturnValue(500);
-        vehiculoTresDatos.calcularRentabilidad.mockReturnValue(150);
-
-        estadistica.agregarVehiculos(1, vehiculoUno);
-        estadistica.agregarVehiculos(2, vehiculoDos);
-        estadistica.agregarVehiculos(3, vehiculoTres);
+      estadistica = new Estadistica();
     })
 
-    test("El metodo vehiculoMasAlquilado debe devolver el vehiculo más alquilado", () => {
-        expect(estadistica.vehiculoMasAlquilado()).toBe(vehiculoTres);
+    test("El metodo vehiculoMasAlquilado() debe devolver el vehiculo3", () => {
+      const vehiculo1 = mockVehiculo(2,0);
+      const vehiculo2 = mockVehiculo(5,0);
+      const vehiculo3 = mockVehiculo(10,0);
+
+      const mockMap = new Map<number, Vehiculo>([
+        [1,vehiculo1],
+        [2,vehiculo2],
+        [3,vehiculo3],
+      ])
+
+      const masAlquilado = estadistica.vehiculoMasAlquilado(mockMap);
+
+      expect(masAlquilado).toBe(vehiculo3);
     })
 
-    test("El metodo menosRentabilidad debe devolver el vehiculo con menor rentabilidad", () => {
-        expect(estadistica.menosRentabilidad()).toBe(vehiculoUno);
+    test("El metodo vehiculoMenosAlquilado() debe devolver el vehiculo1", () =>{
+      const vehiculo1 = mockVehiculo(2,0);
+      const vehiculo2 = mockVehiculo(5,0);
+      const vehiculo3 = mockVehiculo(10,0);
+
+      const mockMap = new Map<number, Vehiculo>([
+        [1,vehiculo1],
+        [2,vehiculo2],
+        [3,vehiculo3],
+      ])
+
+      const menosAlquilado = estadistica.vehiculoMenosAlquilado(mockMap);
+
+      expect(menosAlquilado).toBe(vehiculo1);
     })
 
-    test("El metodo mayorRentabilidad debe devolver el vehiculo con mayor rentabilidad", () => {
-        expect(estadistica.mayorRentabilidad()).toBe(vehiculoDos);
+    test("El metodo menosRentabilidad() debe devolver el vehiculo3", () =>{
+      const vehiculo1 = mockVehiculo(0,450);
+      const vehiculo2 = mockVehiculo(0,110);
+      const vehiculo3 = mockVehiculo(0,-10);
+
+      const mockMap = new Map<number, Vehiculo>([
+        [1,vehiculo1],
+        [2,vehiculo2],
+        [3,vehiculo3],
+      ])
+
+      const menosRentable = estadistica.menosRentabilidad(mockMap);
+
+      expect(menosRentable).toBe(vehiculo3)
     })
+
+    test("El metodo mayorRentabilidad() debe devolver el vehiculo1", () =>{
+      const vehiculo1 = mockVehiculo(0,450);
+      const vehiculo2 = mockVehiculo(0,110);
+      const vehiculo3 = mockVehiculo(0,-10);
+
+      const mockMap = new Map<number, Vehiculo>([
+        [1,vehiculo1],
+        [2,vehiculo2],
+        [3,vehiculo3],
+      ])
+
+      const menosRentable = estadistica.mayorRentabilidad(mockMap);
+
+      expect(menosRentable).toBe(vehiculo1)
+    })
+
+    test("El metodo porcentajeEnAlquiler() debe devolver 66.66666666666666%", () =>{
+      const vehiculo1 = mockVehiculoEstado(EstadoVehiculo.EN_ALQUILER);
+      const vehiculo2 = mockVehiculoEstado(EstadoVehiculo.EN_ALQUILER);
+      const vehiculo3 = mockVehiculoEstado(EstadoVehiculo.DISPONIBLE);
+
+      const mockMap = new Map<number, Vehiculo>([
+        [1, vehiculo1],
+        [2, vehiculo2],
+        [3, vehiculo3]
+      ]);
+
+      const porcentaje = estadistica.porcentajeEnAlquiler(mockMap);
+
+      expect(porcentaje).toBe("66.66666666666666%");
+    })
+
+    test("El metodo generarReporte()", () =>{
+      const vehiculo1 = mockVehiculo(5,450, 101);
+      const vehiculo2 = mockVehiculo(2,110, 202);
+      const vehiculo3 = mockVehiculo(10,-10, 303);
+
+      const mockMap = new Map<number, Vehiculo>([
+        [1,vehiculo1],
+        [2,vehiculo2],
+        [3,vehiculo3],
+      ])
+
+      const reporte = estadistica.generarReporte(mockMap);
+
+      expect(reporte).toContain("Vehiculo mas alquilado: 303");
+      expect(reporte).toContain("Vehiculo menos alquilado: 202");
+      expect(reporte).toContain("Vehiculo mas rentable: 101")
+      expect(reporte).toContain("Vehiculo menos rentable: 303")
+      expect(reporte).toMatch(/Porcentaje en alquiler:/);
+    })
+
 })
