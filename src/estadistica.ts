@@ -56,10 +56,6 @@ export default class Estadistica {
         const vehiculosArray = Array.from(vehiculos.values());
         const totalVehiculos = vehiculosArray.length;
         const totalEnAlquiler = vehiculosArray.filter(v => v["estado"] === EstadoVehiculo.EN_ALQUILER).length;
-
-        if(vehiculosArray.length == 0){
-            throw new Error ("No hay vehiculos en la flota")
-        }
         
         const porcentajeEnAlquiler = (totalEnAlquiler / totalVehiculos) * 100
         const porcentaje = porcentajeEnAlquiler.toString() + "%"
