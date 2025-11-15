@@ -2,7 +2,6 @@ import { EstrategiaTemporada } from "./EstrategiaTemporada";
 import EstrategiaTemporadaAlta from "./EstrategiaTemporadaAlta";
 import EstrategiaTemporadaBaja from "./EstrategiaTemporadaBaja";
 import EstrategiaTemporadaMedia from "./EstrategiaTemporadaMedia";
-import { Temporada } from "./Temporada";
 /**
  * Representa un seteador de estrategias para la tarifa base
  * @class

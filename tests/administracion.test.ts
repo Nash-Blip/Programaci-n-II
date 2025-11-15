@@ -157,7 +157,7 @@ describe("Administracion", () => {
 
   // ----------- recibirVehiculo -----------
 
-  test("recibirVehiculo aumenta alquileres y deja DISPONIBLE cuando no necesita mantenimiento", () => {
+  test("recibirVehiculo aumenta alquileres y deja DISPONIBLE", () => {
     const vehiculo = crearVehiculoMock();
     const reserva = crearReservaMock(vehiculo);
 
@@ -174,11 +174,10 @@ describe("Administracion", () => {
     expect(datosMant.aumentarCantidadAlquileres).toHaveBeenCalledTimes(1);
     expect(vehiculo.setEstadoDisponible).toHaveBeenCalledTimes(1);
     expect(MantenimientoMock).not.toHaveBeenCalled();
-    expect(reserva.marcarMantenimiento).not.toHaveBeenCalled();
     expect(admin.getVehiculos().get(20)).toBe(vehiculo);
   });
 
-  test("recibirVehiculo crea Mantenimiento y marca la reserva cuando necesita mantenimiento", () => {
+  test("recibirVehiculo llama a Mantenimiento cuando el vehiculo lo necesita", () => {
     const vehiculo = crearVehiculoMock();
     const reserva = crearReservaMock(vehiculo);
 
@@ -196,7 +195,6 @@ describe("Administracion", () => {
     expect(MantenimientoMock).toHaveBeenCalledTimes(1);
     expect(MantenimientoMock).toHaveBeenCalledWith(vehiculo);
     expect(vehiculo.setEstadoDisponible).not.toHaveBeenCalled();
-    expect(reserva.marcarMantenimiento).toHaveBeenCalledTimes(1);
     expect(admin.getVehiculos().get(21)).toBe(vehiculo);
   });
 

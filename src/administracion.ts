@@ -67,7 +67,7 @@ export default class Administracion{
     /**
      * Busca el vehiculo en la flota de vehiculos
      * @param {Reserva} r - Reserva que contiene el vehiculo solicitado
-     * @returns {Vehiculo} solicitado por la reserva
+     * @returns {Vehiculo} Vehiculo solicitado por la reserva
      * @throws {Error} Si  el vehiculo no se encuentra registrado en la flota
      */
     private obtenerVehiculoDeReserva(r: Reserva): Vehiculo{

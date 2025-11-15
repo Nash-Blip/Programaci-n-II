@@ -2,7 +2,6 @@ import EstrategiaSegunTemporada from "../src/EstrategiaSegunTemporada";
 import EstrategiaTemporadaAlta from "../src/EstrategiaTemporadaAlta";
 import EstrategiaTemporadaBaja from "../src/EstrategiaTemporadaBaja";
 import EstrategiaTemporadaMedia from "../src/EstrategiaTemporadaMedia";
-import { Temporada } from "../src/Temporada";
 
 describe('tests calcular temporada', () => {
     let mockFecha: Date;
