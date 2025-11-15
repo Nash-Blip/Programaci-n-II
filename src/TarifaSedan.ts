@@ -10,12 +10,22 @@ import CalcularTemporada from "./EstrategiaSegunTemporada";
 import { Temporada } from "./Temporada";
 import EstrategiaSegunTemporada from "./EstrategiaSegunTemporada";
 import { EstrategiaTemporada } from "./EstrategiaTemporada";
-
+/**
+ * Representa la tarifa aplicada a vehículos de tipo **Sedan**.
+ * Implementa la lógica específica para calcular el costo total,
+ *
+ * @class
+ * @implements {Tarifa}
+ */
 export default class TarifaSedan implements Tarifa{
     private tarifaBase = 50
     calcularKm: CalcularKilometros = new CalcularKilometros();
     seteadorEstrategia: EstrategiaSegunTemporada = new EstrategiaSegunTemporada();
-
+    /**
+     * devuelve el precio de tarifa con la logica de los Sedan
+     * @param @param {Reserva} r - La reserva desde la cual obtener fechas y kilometraje.
+     * @returns {number} El costo total de la tarifa para la reserva.
+     */
     public calcularTarifa(r: Reserva): number{
         const estrategia = this.seteadorEstrategia.setEstrategiaTemporada(r.getFechaInicio())
 
