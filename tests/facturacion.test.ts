@@ -61,7 +61,7 @@ describe("Facturacion", () => {
         const fact = new Facturacion();
         const total = fact.calcularMontoFinal(reservaMock as any);
 
-        expect(total).toBe(15000); // 10000 + 5000
+        expect(total).toBe(15000); 
         expect(disponibilidadMock.necesitaMantenimiento).toHaveBeenCalled();
     });
 
