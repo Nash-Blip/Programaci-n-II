@@ -2,9 +2,10 @@ import {EstadoVehiculo} from "./estadoVehiculo";
 import { Tarifa } from "./Tarifa";
 import DatosMantenimiento from "./datosMantenimiento";
 import DatosEstadistica from "./datosEstadistica";
-
 /**
- * Clase abstracta que representa un vehículo.
+ * Clase abstracta que representa un vehículo dentro del sistema.
+ * 
+ * Modela el estado, kilometraje, tarifa, estadísticas y mantenimiento
  */
 export default abstract class Vehiculo{
     private numMatricula: number;
@@ -45,47 +46,33 @@ export default abstract class Vehiculo{
     public getNumMatricula(): number {
         return this.numMatricula;
     }
-
     /**
-     * Establece la cantidad de kilometros recorridos.
-     * @param {number} value - Kilometros recorridos por el vehículo. 
+     * Establece el kilometraje del vehículo.
+     * @param {number} value Nuevo kilometraje.
      */
     public setKilometro(value: number): void {
         this.kilometro = value;
     }
-
     /**
-     * Retorna los kilometros recorridos del vehículo.
-     * @returns {number} kilometro - Kilometros recorridos por el vehículo.
+     * Obtiene el kilometraje actual.
+     * @returns {number} Kilometraje del vehículo.
      */
     public getKilometro(): number {
         return this.kilometro;
     }
-
-    /**
-     * Establece que el vehículo esta disponible.
-     */
+    /** Cambia el estado del vehículo a DISPONIBLE. */
     public setEstadoDisponible(): void {
         this.estado = EstadoVehiculo.DISPONIBLE;
     }
-
-    /**
-     * Establece que el vehículo esta en alquiler.
-     */
+    /** Cambia el estado del vehículo a EN_ALQUILER. */
     public setEstadoEnAlquiler(): void {
         this.estado = EstadoVehiculo.EN_ALQUILER;
     }
-
-    /**
-     * Establece que el vehículo esta en mantenimiento.
-     */
+    /** Cambia el estado del vehículo a EN_MANTENIMIENTO. */
     public setEstadoEnMantenimiento(): void {
         this.estado = EstadoVehiculo.EN_MANTENIMIENTO;
     }
-
-    /**
-     * Establece que el vehículo necesita limpieza.
-     */
+    /** Cambia el estado del vehículo a NECESITA_LIMPIEZA. */
     public setEstadoNecesitaLimpieza(): void {
         this.estado = EstadoVehiculo.NECESITA_LIMPIEZA;
     }
@@ -129,18 +116,16 @@ export default abstract class Vehiculo{
     public getLogicaTarifa(): Tarifa {
         return this.logicaTarifa;
     }
-
     /**
-     * Establece los datos para gestionar el mantenimiento del vehícuol.
-     * @param {DatosMantenimiento} datos - Los datos de mantenimiento. 
+     * Establece los datos de mantenimiento del vehículo.
+     * @param {DatosMantenimiento} datos Nuevos datos de mantenimiento.
      */
     public setDatosMantenimiento(datos: DatosMantenimiento): void{
         this.datosMantenimiento = datos;
     }
-
     /**
-     * Retorna los datos para gestionar el mantenimiento del vehículo.
-     * @returns {DatosMantenimiento} datosMantenimiento - Los datos de mantenimiento del vehículo.
+     * Obtiene los datos de mantenimiento del vehículo.
+     * @returns {DatosMantenimiento} Información de mantenimiento.
      */
     public getDatosMantenimiento(): DatosMantenimiento {
         return this.datosMantenimiento;

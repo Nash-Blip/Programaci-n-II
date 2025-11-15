@@ -101,10 +101,13 @@ export default class Estadistica {
 
         return porcentaje
     }
-
     /**
-     * Genera el reporte de estadística de los vehículos
-     * @param {Map} vehiculos - El Map de los vehículos.
+     * Genera un reporte de estadisticas qeu devuelve los siguientes datos:
+     * Vehiculo mas y menos alquilado
+     * Vehiculo mas y menos rentable
+     * Porcentaje de vehiculos que se encuentran en alquiler
+     * @param {Map}vehiculos Es la flota de vehiculos que se pasa desde administracion
+     * @returns {string} Retorne el reporte
      */
     public generarReporte(vehiculos: Map<number, Vehiculo>): string{
 
