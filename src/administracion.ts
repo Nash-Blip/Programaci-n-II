@@ -130,7 +130,6 @@ export default class Administracion{
         if(necesitaMant){
             const mantenimiento = new Mantenimiento(vehiculo);
             this.mantenimientos.set(vehiculo.getNumMatricula(), mantenimiento);
-            r.marcarMantenimiento();
         } else{
             vehiculo.setEstadoDisponible();
         }
