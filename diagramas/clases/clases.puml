@@ -15,10 +15,19 @@ class Sedan extends Vehiculo{}
 class Suv extends Vehiculo{}
 class Compacto extends Vehiculo{}
 
-class CalcularTemporada{
-    -getTemporada(): string
-    +tarifaBaseTemporada(): number
+class EstrategiaSegunTemporada{
+    +setEstrategiaTemporada(fecha: Date)
 }
+
+interface EstrategiaTemporada{
+    tarifaBaseTemporada(tarifaBase: number)
+}
+
+class EstrategiaTemporadaAlta implements EstrategiaTemporada{}
+
+class EstrategiaTemporadaBaja implements EstrategiaTemporada{}
+
+class EstrategiaTemporadaMedia implements EstrategiaTemporada{}
 
 class DatosEstadistica{
     -cantidadDeVecesAlquilado: number
@@ -127,7 +136,8 @@ Administracion <-- Reserva
 Vehiculo *-u- DatosEstadistica
 Vehiculo *-l- DatosMantenimiento
 Vehiculo *-r- Estadistica
-CalcularTemporada <-- Tarifa
+EstrategiaSegunTemporada <-- Tarifa
+EstrategiaTemporada <-- Tarifa
 Vehiculo *-- Mantenimiento
 Administracion <-- Estadistica
 
