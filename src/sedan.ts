@@ -1,10 +1,15 @@
-
 import Vehiculo from "./vehiculo";
 import TarifaSedan from "./TarifaSedan";
-import DatosEstadistica from "./datosEstadistica";
-import DatosMantenimiento from "./datosMantenimiento";
 
+/**
+ * Clase concreta que representa un vehículo de tipo Sedan 
+ */
 export default class Sedan extends Vehiculo{
+    /**
+     * Crea una instancia de la clase Compacto
+     * Hereda los atributos y metodos de la clase Vehiculo.
+     * Inicializa la tarifa base en su respectivo valor (50) y se le asigna la correcta lógica para calcular la tarifa total 
+     */
     constructor(){
         super();
         this.tarifaBase = 50;

@@ -15,9 +15,19 @@ class Sedan extends Vehiculo{}
 class Suv extends Vehiculo{}
 class Compacto extends Vehiculo{}
 
-class Temporada{
-    +getTemporada(): string
+class EstrategiaSegunTemporada{
+    +setEstrategiaTemporada(fecha: Date)
 }
+
+interface EstrategiaTemporada{
+    tarifaBaseTemporada(tarifaBase: number)
+}
+
+class EstrategiaTemporadaAlta implements EstrategiaTemporada{}
+
+class EstrategiaTemporadaBaja implements EstrategiaTemporada{}
+
+class EstrategiaTemporadaMedia implements EstrategiaTemporada{}
 
 class DatosEstadistica{
     -cantidadDeVecesAlquilado: number
@@ -29,10 +39,13 @@ class DatosEstadistica{
 }
 
 class Mantenimiento{
-    -vehiculo: Vehiculo
-    -fecha: Date
+    - vehiculo: Vehiculo
+    - fechaInicio: Date
+    - DURACION_MS : number
 
-    +costoMantenimiento(): number
+    +horasTranscurridas(fechaActual: Date): number
+    +informeHorasTranscurridas(fechaActual: Date): boolean
+    +finalizar(fechaActual: Date): void
 }
 
 class DatosMantenimiento{
@@ -46,7 +59,8 @@ class DatosMantenimiento{
 
 interface Tarifa{
     calcularKm: CalcularKilometros
-    calcularTarifa(reserva: Reserva): number
+    calcularTemporada: CalcularTemporada
+    +calcularTarifa(reserva: Reserva): number
 }
 
 class tarifaSuv implements Tarifa{}
@@ -80,6 +94,15 @@ enum EstadoVehiculo{
     NECESITA_LIMPIEZA,
 }
 
+class Facturacion {
+    - _EXTRA_MANTENIMIENTO: number
+    - disponibilidad: Disponibilidad
+
+    - calcularMontoBase(reserva: Reserva): number
+    - calcularExtraPorMantenimiento(reserva: Reserva): number
+    + calcularMontoFinal(reserva: Reserva): number
+}
+
 class Administracion{
     -vehiculos: Map<matricula: number, vehiculo>
     -reservas: Map<idReserva: number,Reserva>
@@ -87,6 +110,8 @@ class Administracion{
     -controladorDeEstadisticas: Estadistica
 
     --Getters_Y_Setters--
+    +obtenerVehiculoDeReserva(r: Reserva): Vehiculo
+    +actualizarMantenimiento(vehiculo: Vehiculo, fechaActual: Date): void
     +procesarReserva(reserva: Reserva): boolean
     +entregarVehiculo(reserva: Reserva): void
     +recibirVehiculo(reserva: Reserva): void
@@ -98,12 +123,11 @@ class Disponibilidad{
 }
 
 class Estadistica{
-    -vehiculos: Map<Vehiculo>
-    + vehiculoMasAlquilado(): Vehiculo
-    + menosRentabilidad(): Vehiculo
-    + mayorRentabilidad(): Vehiculo
-    + cantidadEnAlquiler(): number
-    + generarReporte(): void
+    + vehiculoMasAlquilado(vehiculos: Map<Vehiculo>): Vehiculo
+    + menosRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
+    + mayorRentabilidad(vehiculos: Map<Vehiculo>): Vehiculo
+    + porcentajeEnAlquiler(vehiculos: Map<Vehiculo>): number
+    + generarReporte(vehiculos: Map<Vehiculo>): void
 }
 
 
@@ -116,6 +140,11 @@ Administracion *-- Disponibilidad
 Administracion <-- Reserva
 Vehiculo *-u- DatosEstadistica
 Vehiculo *-l- DatosMantenimiento
-Estadistica *-l- Vehiculo
+Vehiculo *-r- Estadistica
+EstrategiaSegunTemporada <-- Tarifa
+EstrategiaTemporada <-- Tarifa
+Vehiculo *-- Mantenimiento
+Administracion <-- Estadistica
+Facturacion <-- Disponibilidad
 
 @enduml

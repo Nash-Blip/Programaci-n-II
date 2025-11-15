@@ -1,31 +1,75 @@
 import DatosMantenimiento from "../src/datosMantenimiento";
-import moment from "moment";
 
 describe("DatosMantenimiento", () => {
-  test("calculadoraFecha devuelve 0 si el mantenimiento fue este mes", () => {
-    const fechaActual = new Date();
-    const datos = new DatosMantenimiento(50000, fechaActual, 2);
+  const originalDateNow = Date.now;
 
-    const resultado = datos.calculadoraFecha();
-
-    expect(resultado).toBe(0);
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  test("calculadoraFecha devuelve 6 si el mantenimiento fue hace 6 meses", () => {
-    const fechaHaceSeisMeses = moment().subtract(6, "months").toDate(); 
-    const datos = new DatosMantenimiento(40000, fechaHaceSeisMeses, 3);
-
-    const resultado = datos.calculadoraFecha();
-
-    expect(resultado).toBe(6);
+  afterEach(() => {
+    Date.now = originalDateNow;
   });
 
-  test("calculadoraFecha devuelve 12 si el mantenimiento fue hace 1 año", () => {
-    const fechaHaceUnAño = moment().subtract(1, "year").toDate();
-    const datos = new DatosMantenimiento(30000, fechaHaceUnAño, 5);
+  test("constructor inicializa correctamente los valores", () => {
+    const fecha = new Date(2023, 0, 1);
+    const datos = new DatosMantenimiento(10000, fecha, 3);
 
-    const resultado = datos.calculadoraFecha();
+    expect(datos.getKmUltimoMant()).toBe(10000);
+    expect(datos.getFechaUltimoMant()).toBe(fecha);
+    expect(datos.getAlquileresCantidad()).toBe(3);
+  });
 
-    expect(resultado).toBe(12);
+  test("setKmUltimoMant y getKmUltimoMant funcionan correctamente", () => {
+    const datos = new DatosMantenimiento(5000, new Date(), 0);
+
+    datos.setKmUltimoMant(15000);
+
+    expect(datos.getKmUltimoMant()).toBe(15000);
+  });
+
+  test("setFechaUltimoMant y getFechaUltimoMant funcionan correctamente", () => {
+    const fecha1 = new Date(2022, 5, 10);
+    const fecha2 = new Date(2023, 3, 20);
+
+    const datos = new DatosMantenimiento(0, fecha1, 0);
+
+    datos.setFechaUltimoMant(fecha2);
+
+    expect(datos.getFechaUltimoMant()).toBe(fecha2);
+  });
+
+  test("aumentarCantidadAlquileres incrementa en 1 el contador", () => {
+    const datos = new DatosMantenimiento(0, new Date(), 2);
+
+    datos.aumentarCantidadAlquileres();
+
+    expect(datos.getAlquileresCantidad()).toBe(3);
+  });
+
+  test("calculadoraFecha devuelve 0 meses si la fecha es el mismo mes de la fecha actual simulada", () => {
+    const ahora = new Date(2024, 0, 15);
+    Date.now = () => ahora.getTime();
+
+    const fechaUltimoMant = new Date(2024, 0, 1);
+
+    const datos = new DatosMantenimiento(0, fechaUltimoMant, 0);
+
+    const meses = datos.calculadoraFecha();
+
+    expect(meses).toBe(0);
+  });
+
+  test("calculadoraFecha devuelve la cantidad de meses transcurridos (ej: 12 meses)", () => {
+    const ahora = new Date(2024, 0, 1);
+    Date.now = () => ahora.getTime();
+
+    const fechaUltimoMant = new Date(2023, 0, 1);
+
+    const datos = new DatosMantenimiento(0, fechaUltimoMant, 0);
+
+    const meses = datos.calculadoraFecha();
+
+    expect(meses).toBe(12);
   });
 });

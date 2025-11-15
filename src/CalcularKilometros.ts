@@ -1,8 +1,16 @@
-export default class CalcularKilometros{
-    public promedioKmDiarios(dias: number): number{
-        return 0
+export default class CalcularKilometros {
+
+    public promedioKmDiarios(kmTotales: number, dias: number): number {
+        if (dias <= 0) {
+            throw new Error("Los dias deben ser mayor a 0");
+        }
+        return kmTotales / dias;
     }
-    public calcularKmTotales(kmIniciales: number, kmFinales: number): number{
-        return 0
+
+    public calcularKmTotales(kmIniciales: number, kmFinales: number): number {
+        if (kmFinales <= kmIniciales) {
+            throw new Error("Los km finales no pueden ser menores o iguales que los iniciales.");
+        }
+        return kmFinales - kmIniciales;
     }
 }
