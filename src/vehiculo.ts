@@ -16,27 +16,32 @@ export default abstract class Vehiculo{
     protected datosMantenimiento: DatosMantenimiento;
     public datosEstadistica: DatosEstadistica;
 
+    /**
+     * Crea una instancia de la clase vehículo,
+     * inicializando la matricula, el kilometraje, la tarifa base y el estado del vehículo,
+     * así como la lógica para calcular la tarifa total y gestionar el mantenimiento y la estadistica.  
+     */
     constructor(){
         this.numMatricula = 0;
         this.kilometro = 0;
         this.tarifaBase = 0;
         this.estado = EstadoVehiculo.DISPONIBLE;
         this.logicaTarifa = undefined as unknown as Tarifa;
-        this.kilometro = 0;
-        this.tarifaBase = 0;
         this.datosMantenimiento = new DatosMantenimiento(0, new Date(), 0);
         this.datosEstadistica = new DatosEstadistica();
     }
+
     /**
-     * Establece el número de matrícula.
-     * @param {number} value Nuevo número de matrícula.
+     * Establece la matricula del vehículo.
+     * @param {number} value - La matricula del vehículo.
      */
     public setNumMatricula(value: number): void {
         this.numMatricula = value;
     }
+    
     /**
-     * Retorna el número de matrícula.
-     * @returns {number} Número de matrícula.
+     * Retorna la matricula del vehículo.
+     * @returns {number} numMatricula - La matricula del vehículo.
      */
     public getNumMatricula(): number {
         return this.numMatricula;
@@ -71,30 +76,42 @@ export default abstract class Vehiculo{
     public setEstadoNecesitaLimpieza(): void {
         this.estado = EstadoVehiculo.NECESITA_LIMPIEZA;
     }
+
     /**
-     * Obtiene el estado actual del vehículo.
-     * @returns {EstadoVehiculo} Estado del vehículo.
+     * Retorna el estado del vehículo.
+     * @returns {EstadoVehiculo} estado - El estado actual del vehículo.
      */
     public getEstado(): EstadoVehiculo {
         return this.estado;
     }
+
     /**
-     * Obtiene la tarifa base.
-     * @returns {number} Tarifa base del vehículo.
+     * Establece la tarifa base del vehículo.
+     * @param {number} value - La tarifa base a establecer.
+     */
+    public setTarifaBase(value: number): void {
+        this.tarifaBase = value;
+    }
+
+    /**
+     * Retorna la tarifa base del vehículo.
+     * @returns {number} tarifaBase - La tarifa base del vehículo.
      */
     public getTarifaBase(): number {
         return this.tarifaBase;
     }
+
     /**
-     * Define la estrategia de tarifa del vehículo
-     * @param {Tarifa} logicaTarifa Estrategia de tarifa a aplicar.
+     * Establece la lógica a seguir para calcular la tarifa total
+     * @param {Tarifa} logicaTarifa - La lógica a seguir para calcular la tarifa.
      */
     public setLogicaTarifa(logicaTarifa: Tarifa): void {
         this.logicaTarifa = logicaTarifa;        
     }
+
     /**
-     * Obtiene la estrategia de tarifa asociada.
-     * @returns {Tarifa} Estrategia de tarifa.
+     * Retorna la lógica para calcular la tarifa.
+     * @returns {Tarifa} logicaTarifa - La lógica a seguir para calcular la tarifa.
      */
     public getLogicaTarifa(): Tarifa {
         return this.logicaTarifa;
@@ -113,16 +130,18 @@ export default abstract class Vehiculo{
     public getDatosMantenimiento(): DatosMantenimiento {
         return this.datosMantenimiento;
     }
+
     /**
-     * Establece los datos estadísticos del vehículo.
-     * @param {DatosEstadistica} datos Nuevos datos estadísticos.
+     * Establece los datos para gestionar la estadística.
+     * @param {DatosEstadistica} datos - Los datos estadisticos del vehículo.
      */
     public setDatosEstadistica(datos: DatosEstadistica): void {
         this.datosEstadistica = datos;
     }
+
     /**
-     * Obtiene los datos estadísticos del vehículo.
-     * @returns {DatosEstadistica} Datos estadísticos del vehículo.
+     * Retorna los datos del vehículo para gestionar la estadística.
+     * @returns {DatosEstadistica} datosEstadistica - Las datos estadísticos del vehículo.
      */
     public getDatosEstadistica(): DatosEstadistica {
         return this.datosEstadistica;

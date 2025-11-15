@@ -1,9 +1,15 @@
 import Vehiculo from "./vehiculo";
 import TarifaSuv from "./TarifaSuv";
-import DatosMantenimiento from "./datosMantenimiento";
-import DatosEstadistica from "./datosEstadistica";
 
+/**
+ * Clase concreta que representa un vehículo de tipo SUV 
+ */
 export default class SUV extends Vehiculo{
+    /**
+     * Crea una instancia de la clase SUV
+     * Hereda los atributos y metodos de la clase Vehiculo.
+     * Inicializa la tarifa base en su respectivo valor (80) y se le asigna la correcta lógica para calcular la tarifa total 
+     */
     constructor(){
         super();
         this.tarifaBase = 80;
