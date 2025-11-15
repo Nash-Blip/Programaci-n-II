@@ -1,4 +1,6 @@
-@startuml name prototipoTP
+@startuml name diagramaTp
+
+title Diagrama de clases TP
 
 abstract class Vehiculo{
     - numMatricula: number
