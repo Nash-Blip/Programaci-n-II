@@ -85,8 +85,13 @@ enum EstadoVehiculo{
     NECESITA_LIMPIEZA,
 }
 
-class facturacion{
+class Facturacion {
+    - _EXTRA_MANTENIMIENTO: number
+    - disponibilidad: Disponibilidad
 
+    - calcularMontoBase(reserva: Reserva): number
+    - calcularExtraPorMantenimiento(reserva: Reserva): number
+    + calcularMontoFinal(reserva: Reserva): number
 }
 
 class Administracion{
@@ -130,5 +135,6 @@ Vehiculo *-r- Estadistica
 CalcularTemporada <-- Tarifa
 Vehiculo *-- Mantenimiento
 Administracion <-- Estadistica
+Facturacion <-- Disponibilidad
 
 @enduml
