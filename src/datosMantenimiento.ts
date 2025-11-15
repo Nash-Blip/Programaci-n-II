@@ -2,6 +2,7 @@ import moment from "moment";
 
 /**
 * Clase que almacena los datos de mantenimiento del vehículo.
+* @class
 */
 
 export default class DatosMantenimiento{

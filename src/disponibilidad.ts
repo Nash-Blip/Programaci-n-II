@@ -2,9 +2,10 @@ import Reserva from "./Reserva";
 import moment from "moment";
 
 /**
-* Clase encargada de verificar la disponibilidad del vehículo.
+* Encargada de verificar la disponibilidad del vehículo.
 * Rechaza reservas en caso de solapamiento.
 * Envía el vehículo a mantenimiento, en caso de necesitarlo.
+* @class
 */
 export default class Disponibilidad {
   

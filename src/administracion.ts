@@ -8,6 +8,7 @@ import Mantenimiento from "./mantenimiento";
 /**
 * Clase principal del sistema que gestiona vehículos, reservas,
 * disponibilidad, mantenimiento y estadísticas.
+* @class
 */
 export default class Administracion{
 
