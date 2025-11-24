@@ -1,4 +1,5 @@
-@startuml name prototipoTP
+@startuml 
+title DriveHub
 
 abstract class Vehiculo{
     - numMatricula: number

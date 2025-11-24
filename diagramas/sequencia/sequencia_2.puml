@@ -1,0 +1,45 @@
+@startuml
+title Secuencia 2 – Devolver vehículo y decidir mantenimiento
+
+actor Cliente
+participant "Administracion" as admin
+participant "Vehiculo" as veh
+participant "DatosMantenimiento" as datosMant
+participant "Mantenimiento" as mant
+participant "DatosEstadistica" as datosEst
+
+Cliente -> admin : recibirVehiculo(reserva)
+activate admin
+
+admin -> admin : veh = obtenerVehiculoDeReserva(reserva)
+
+admin -> veh : setKilometros(reserva.kmFinales)
+
+admin -> veh : getDatosMantenimiento()
+admin --> datosMant : referencia
+activate datosMant
+
+datosMant -> datosMant : calculadoraFecha()
+datosMant --> admin : diasDesdeUltimoMantenimiento
+deactivate datosMant
+
+alt Requiere mantenimiento
+    admin -> mant : new Mantenimiento(veh, fechaActual)
+    activate mant
+    mant -> veh : setEstado(EN_MANTENIMIENTO)
+    deactivate mant
+else No requiere mantenimiento
+    admin -> veh : setEstado(NECESITA_LIMPIEZA)
+end
+
+admin -> veh : getDatosEstadistica()
+admin --> datosEst : referencia
+activate datosEst
+datosEst -> datosEst : += reserva.montoFinal
+datosEst -> datosEst : calcularRentabilidad()
+deactivate datosEst
+
+admin --> Cliente : Devolución registrada
+deactivate admin
+
+@enduml
