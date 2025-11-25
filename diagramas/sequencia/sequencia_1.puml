@@ -1,0 +1,56 @@
+@startuml
+title Secuencia 1 – Procesar una reserva
+
+actor Cliente
+participant "Administracion" as admin
+participant "Disponibilidad" as disp
+participant "Facturacion" as fact
+participant "Vehiculo" as veh
+participant "Tarifa\n(logicaTarifa)" as tarifa
+participant "EstrategiaSegunTemporada" as estTemp
+
+Cliente -> admin : procesarReserva(reserva)
+activate admin
+
+admin -> admin : veh = obtenerVehiculoDeReserva(reserva)
+admin -> veh : getEstado()
+
+alt Vehículo NO disponible
+    admin --> Cliente : Reserva rechazada\n(vehículo no disponible)
+    deactivate admin
+else Vehículo disponible
+    admin -> admin : reservasDelVehiculo = obtenerReservas(veh)
+
+    admin -> disp : estaDisponible(reserva, reservasDelVehiculo)
+    activate disp
+    disp --> admin : disponible : boolean
+    deactivate disp
+
+    alt Fechas ocupadas
+        admin --> Cliente : Reserva rechazada\n(fechas no disponibles)
+        deactivate admin
+    else Fechas disponibles
+
+        admin -> fact : calcularMontoFinal(reserva)
+        activate fact
+
+        fact -> veh : getLogicaTarifa()
+        fact --> fact : tarifa = veh.logicaTarifa
+
+        fact -> estTemp : setEstrategiaTemporada(reserva.fechaInicio)
+        estTemp --> fact : estrategiaTemporada
+
+        fact -> tarifa : calcularTarifa(reserva)
+        tarifa --> fact : montoBase
+
+        fact --> admin : montoFinal
+        deactivate fact
+
+        admin -> admin : guardarReserva(reserva)
+
+        admin --> Cliente : Reserva aceptada\nmonto = montoFinal
+        deactivate admin
+    end
+end
+
+@enduml

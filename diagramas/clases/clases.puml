@@ -137,15 +137,15 @@ class Estadistica{
 Vehiculo *-- Tarifa
 Administracion *-- Vehiculo
 Disponibilidad *-- Reserva
-Reserva *-- CalcularKilometros
+Reserva *-r- CalcularKilometros
 Administracion *-- Disponibilidad
 Administracion <-- Reserva
 Vehiculo *-u- DatosEstadistica
 Vehiculo *-l- DatosMantenimiento
 Vehiculo *-r- Estadistica
 EstrategiaSegunTemporada <-- Tarifa
-EstrategiaTemporada <-- Tarifa
-Vehiculo *-- Mantenimiento
+EstrategiaTemporada <-l- Tarifa
+Vehiculo *-d- Mantenimiento
 Administracion <-- Estadistica
 Facturacion <-- Disponibilidad
 
