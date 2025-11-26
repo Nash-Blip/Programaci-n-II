@@ -1,7 +1,8 @@
-import {EstadoVehiculo} from "./estadoVehiculo";
+import EstadoVehiculo from "./estadoVehiculo";
 import { Tarifa } from "./Tarifa";
 import DatosMantenimiento from "./datosMantenimiento";
 import DatosEstadistica from "./datosEstadistica";
+import StateDisponible from "./stateVehiculos/disponible";
 /**
  * Clase abstracta que representa un vehículo dentro del sistema.
  * 
@@ -21,14 +22,18 @@ export default abstract class Vehiculo{
      * inicializando la matricula, el kilometraje, la tarifa base y el estado del vehículo,
      * así como la lógica para calcular la tarifa total y gestionar el mantenimiento y la estadistica.  
      */
-    constructor(){
+    constructor(estado: EstadoVehiculo){
         this.numMatricula = 0;
         this.kilometro = 0;
         this.tarifaBase = 0;
-        this.estado = EstadoVehiculo.DISPONIBLE;
+        this.estado = estado;
         this.logicaTarifa = undefined as unknown as Tarifa;
         this.datosMantenimiento = new DatosMantenimiento(0, new Date(), 0);
         this.datosEstadistica = new DatosEstadistica();
+    }
+
+    public setEstado(estado: EstadoVehiculo): void {
+        this.estado = estado;
     }
 
     /**
@@ -60,31 +65,6 @@ export default abstract class Vehiculo{
     public getKilometro(): number {
         return this.kilometro;
     }
-    /** Cambia el estado del vehículo a DISPONIBLE. */
-    public setEstadoDisponible(): void {
-        this.estado = EstadoVehiculo.DISPONIBLE;
-    }
-    /** Cambia el estado del vehículo a EN_ALQUILER. */
-    public setEstadoEnAlquiler(): void {
-        this.estado = EstadoVehiculo.EN_ALQUILER;
-    }
-    /** Cambia el estado del vehículo a EN_MANTENIMIENTO. */
-    public setEstadoEnMantenimiento(): void {
-        this.estado = EstadoVehiculo.EN_MANTENIMIENTO;
-    }
-    /** Cambia el estado del vehículo a NECESITA_LIMPIEZA. */
-    public setEstadoNecesitaLimpieza(): void {
-        this.estado = EstadoVehiculo.NECESITA_LIMPIEZA;
-    }
-
-    /**
-     * Retorna el estado del vehículo.
-     * @returns {EstadoVehiculo} estado - El estado actual del vehículo.
-     */
-    public getEstado(): EstadoVehiculo {
-        return this.estado;
-    }
-
     /**
      * Establece la tarifa base del vehículo.
      * @param {number} value - La tarifa base a establecer.
