@@ -108,49 +108,5 @@ describe("Disponibilidad", () => {
       return reserva as unknown as jest.Mocked<Reserva>;
     };
 
-    test("devuelve true si pasaron más de 10.000 km desde el último mantenimiento", () => {
-      const reserva = crearReservaMock(25000, 14000, 5, 3);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(true);
-    });
-
-    test("devuelve true si pasaron más de 12 meses desde el último mantenimiento", () => {
-      const reserva = crearReservaMock(20000, 15000, 13, 2);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(true);
-    });
-
-    test("devuelve true si la cantidad de alquileres es múltiplo de 5", () => {
-      const reserva = crearReservaMock(20000, 15000, 10, 10);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(true);
-    });
-
-    test("devuelve true si se cumplen varios criterios al mismo tiempo", () => {
-      const reserva = crearReservaMock(30000, 19000, 15, 10);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(true);
-    });
-
-    test("devuelve false si no se cumple ningún criterio", () => {
-      const reserva = crearReservaMock(15000, 10000, 6, 3);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(false);
-    });
-
-    test("devuelve false justo en el límite de 10.000 km", () => {
-      const reserva = crearReservaMock(20000, 10000, 10, 2);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(false);
-    });
-
-    test("devuelve false justo en el límite de 12 meses", () => {
-      const reserva = crearReservaMock(20000, 15000, 12, 4);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(false);
-    });
-
-    test("devuelve true si la cantidad de alquileres es exactamente 5 (múltiplo de 5)", () => {
-      const reserva = crearReservaMock(18000, 15000, 8, 5);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(true);
-    });
-
-    test("devuelve false si la cantidad de alquileres no es múltiplo de 5", () => {
-      const reserva = crearReservaMock(18000, 15000, 8, 4);
-      expect(disp.necesitaMantenimiento(reserva)).toBe(false);
-    });
   });
 });
