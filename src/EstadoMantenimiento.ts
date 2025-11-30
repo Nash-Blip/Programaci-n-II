@@ -33,7 +33,4 @@ export default class EstadoMantenimiento implements IEstado{
         return ms / (1000 * 60 * 60);
     }
 
-    private reiniciarDatos(): void{
-
-    }
 }
