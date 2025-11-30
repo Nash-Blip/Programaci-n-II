@@ -11,10 +11,6 @@ export default class EstadoEnAlquiler implements IEstado{
         this.kmIniciales = this.contexto.getKilometro();
     }
 
-    setContexto(c: Vehiculo): void{
-        this.contexto = c;
-    }
-
     alquilar(): boolean {
         throw new Error('El vehiculo ya se encuentra alquilado, no es posible su reserva');
     }

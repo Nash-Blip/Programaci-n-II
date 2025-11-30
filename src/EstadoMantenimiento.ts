@@ -1,4 +1,5 @@
 import EstadoDisponible from "./EstadoDisponible";
+import EstadoEnAlquiler from "./EstadoEnAlquiler";
 import { IEstado } from "./IEstados";
 import Vehiculo from "./vehiculo";
 
@@ -11,16 +12,12 @@ export default class EstadoMantenimiento implements IEstado{
         this.fechaInicio = new Date();
     }
 
-    setContexto(c: Vehiculo): void{
-        this.contexto = c;
-    }
-
     alquilar(): boolean {
         if(this.horasTranscurridas(new Date()) > 24){
             this.contexto.getDatosMantenimiento().reiniciarDatos();
             this.contexto.getDatosEstadistica().aumentarCostosMantenimiento(this.costoMantenimiento);
-            this.contexto.setEstado(new EstadoDisponible(this.contexto));
-            return this.contexto.alquilar();
+            this.contexto.setEstado(new EstadoEnAlquiler(this.contexto));
+            return true
         }else{
             throw new Error('El vehiculo se encuentra en mantenimiento no puede ser alquilado');
         }

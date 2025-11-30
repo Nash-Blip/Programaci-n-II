@@ -8,10 +8,6 @@ export default class EstadoDisponible implements IEstado{
         this.contexto = c;
     }
 
-    setContexto(c: Vehiculo): void{
-        this.contexto = c;
-    }
-
     alquilar(): boolean {
         this.contexto.setEstado(new EstadoEnAlquiler(this.contexto));
         return true;
