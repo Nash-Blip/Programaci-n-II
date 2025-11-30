@@ -16,7 +16,7 @@ function crearVehiculoMock() {
 function crearDatosMantMock() {
     return {
         getKmUltimoMant: jest.fn(),
-        getFechaUltimoMant: jest.fn(),
+        calculadoraFecha: jest.fn(),
         getAlquileresCantidad: jest.fn(),
         aumentarCantidadAlquileres: jest.fn(),
         aumentarKmUltimoMant: jest.fn(),
@@ -83,7 +83,7 @@ describe("EstadoEnAlquiler", () => {
 
     test("devolver() → pasa a EstadoDisponible si NO necesita mantenimiento", () => {
         datosMantMock.getKmUltimoMant.mockReturnValue(5000);
-        datosMantMock.getFechaUltimoMant.mockReturnValue(5);
+        datosMantMock.calculadoraFecha.mockReturnValue(5);
         datosMantMock.getAlquileresCantidad.mockReturnValue(2);
 
         const estado = new EstadoEnAlquiler(vehiculoMock);
@@ -99,7 +99,7 @@ describe("EstadoEnAlquiler", () => {
 
     test("devolver() → pasa a EstadoMantenimiento si requiere mantenimiento", () => {
         datosMantMock.getKmUltimoMant.mockReturnValue(15000);
-        datosMantMock.getFechaUltimoMant.mockReturnValue(13);
+        datosMantMock.calculadoraFecha.mockReturnValue(13);
         datosMantMock.getAlquileresCantidad.mockReturnValue(7);
 
         const estado = new EstadoEnAlquiler(vehiculoMock);

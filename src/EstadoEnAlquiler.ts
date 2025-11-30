@@ -26,7 +26,7 @@ export default class EstadoEnAlquiler implements IEstado{
 
     private necesitaMantenimiento(): boolean{
         const kmDesdeUltimoMant = this.contexto.getDatosMantenimiento().getKmUltimoMant();
-        const mesesTranscuMant = this.contexto.getDatosMantenimiento().getFechaUltimoMant();
+        const mesesTranscuMant = this.contexto.getDatosMantenimiento().calculadoraFecha();
         const cantAlquileres =this.contexto.getDatosMantenimiento().getAlquileresCantidad();
     
         return kmDesdeUltimoMant > 10000 || mesesTranscuMant > 12 || cantAlquileres > 5
