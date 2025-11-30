@@ -21,11 +21,12 @@ describe("DatosMantenimiento", () => {
   });
 
   test("setKmUltimoMant y getKmUltimoMant funcionan correctamente", () => {
-    const datos = new DatosMantenimiento(5000, new Date(), 0);
+    const datos = new DatosMantenimiento(0, new Date(), 0);
 
-    datos.setKmUltimoMant(15000);
+    datos.aumentarKmUltimoMant(15000);
+    const total = datos.getKmUltimoMant();
 
-    expect(datos.getKmUltimoMant()).toBe(15000);
+    expect(total).toBe(15000);
   });
 
   test("setFechaUltimoMant y getFechaUltimoMant funcionan correctamente", () => {

@@ -33,17 +33,4 @@ export default class Disponibilidad {
     }
     return true;
   }
-
-  /**
-  * Verifica si el vehículo necesita mantenimiento.
-  * @param {Reserva} r - Reserva que contiene el vehículo a verificar.
-  * @returns {boolean} True si necesita mantenimiento, false si no lo necesita.
-  */
-  public necesitaMantenimiento(r: Reserva): boolean{
-    const kmDesdeUltimoMant = r.getVehiculo().getKilometro() - r.getVehiculo().getDatosMantenimiento().getKmUltimoMant();
-    const mesesTranscuMant = r.getVehiculo().getDatosMantenimiento().calculadoraFecha();
-    const cantAlquileres = r.getVehiculo().getDatosMantenimiento().getAlquileresCantidad();
-    
-    return kmDesdeUltimoMant > 10000 || mesesTranscuMant > 12 || cantAlquileres % 5 === 0;
-  }
 }

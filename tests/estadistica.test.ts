@@ -6,17 +6,13 @@ import { EstadoVehiculo } from "../src/estadoVehiculo";
 describe("Tests Estadística", () =>{
     let estadistica: Estadistica;
     let mockDatosEstadistica: any;
-    const mockVehiculo = (vecesAlquilado: number, rentabilidad: number, matricula?: number) => ({
+    const mockVehiculo = (vecesAlquilado?: number, rentabilidad?: number, matricula?: number) => ({
           getNumMatricula: jest.fn().mockReturnValue(matricula),
           datosEstadistica: {
             getCantidadDeVecesAlquilado: jest.fn().mockReturnValue(vecesAlquilado),
             calcularRentabilidad: jest.fn().mockReturnValue(rentabilidad)
           }
     }) as unknown as Vehiculo;
-
-    const mockVehiculoEstado = (estado: EstadoVehiculo) => ({
-      estado
-    })as unknown as Vehiculo;
 
     beforeEach(()=>{
       estadistica = new Estadistica();
@@ -87,9 +83,9 @@ describe("Tests Estadística", () =>{
     })
 
     test("El metodo porcentajeEnAlquiler() debe devolver 66.66666666666666%", () =>{
-      const vehiculo1 = mockVehiculoEstado(EstadoVehiculo.EN_ALQUILER);
-      const vehiculo2 = mockVehiculoEstado(EstadoVehiculo.EN_ALQUILER);
-      const vehiculo3 = mockVehiculoEstado(EstadoVehiculo.DISPONIBLE);
+      const vehiculo1 = mockVehiculo()
+      const vehiculo2 = mockVehiculo()
+      const vehiculo3 = mockVehiculo()
 
       const mockMap = new Map<number, Vehiculo>([
         [1, vehiculo1],
@@ -97,7 +93,9 @@ describe("Tests Estadística", () =>{
         [3, vehiculo3]
       ]);
 
-      const porcentaje = estadistica.porcentajeEnAlquiler(mockMap);
+      const mockCantidadEnAlquiler = 2;
+
+      const porcentaje = estadistica.porcentajeEnAlquiler(mockMap, mockCantidadEnAlquiler);
 
       expect(porcentaje).toBe("66.66666666666666%");
     })
@@ -112,8 +110,9 @@ describe("Tests Estadística", () =>{
         [2,vehiculo2],
         [3,vehiculo3],
       ])
+      const mockCantidadEnAlquiler = 2;
 
-      const reporte = estadistica.generarReporte(mockMap);
+      const reporte = estadistica.generarReporte(mockMap, mockCantidadEnAlquiler);
 
       expect(reporte).toContain("Vehiculo mas alquilado: 303");
       expect(reporte).toContain("Vehiculo menos alquilado: 202");
