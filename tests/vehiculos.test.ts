@@ -13,7 +13,6 @@ describe("Vehiculo (clase base)", () => {
     expect(vehiculo.getNumMatricula()).toBe(0);
     expect(vehiculo.getKilometro()).toBe(0);
     expect(vehiculo.getTarifaBase()).toBe(0);
-    expect(vehiculo.getEstado()).toBe(EstadoVehiculo.DISPONIBLE);
 
     const datosMant = vehiculo.getDatosMantenimiento();
     const datosEst = vehiculo.getDatosEstadistica();
@@ -38,21 +37,6 @@ describe("Vehiculo (clase base)", () => {
     expect(vehiculo.getKilometro()).toBe(45678);
   });
 
-  test("los métodos de cambio de estado actualizan correctamente el estado del vehículo", () => {
-    const vehiculo = new VehiculoConcreto();
-
-    vehiculo.setEstadoEnAlquiler();
-    expect(vehiculo.getEstado()).toBe(EstadoVehiculo.EN_ALQUILER);
-
-    vehiculo.setEstadoEnMantenimiento();
-    expect(vehiculo.getEstado()).toBe(EstadoVehiculo.EN_MANTENIMIENTO);
-
-    vehiculo.setEstadoNecesitaLimpieza();
-    expect(vehiculo.getEstado()).toBe(EstadoVehiculo.NECESITA_LIMPIEZA);
-
-    vehiculo.setEstadoDisponible();
-    expect(vehiculo.getEstado()).toBe(EstadoVehiculo.DISPONIBLE);
-  });
 
   test("setLogicaTarifa y getLogicaTarifa guardan y devuelven la tarifa", () => {
     const vehiculo = new VehiculoConcreto();

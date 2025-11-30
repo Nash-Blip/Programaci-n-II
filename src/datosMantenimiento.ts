@@ -12,15 +12,12 @@ export default class DatosMantenimiento{
      * @param {Date} fechaUltimoMantenimiento - Fecha del último mantenimiento.
      * @param {number} alquileresCantidad - Cantidad de alquileres desde la última revisión.
      */
-    constructor(
-        private kmUltimoMantenimiento: number,
-        private fechaUltimoMantenimiento: Date, 
-        private alquileresCantidad: number
-    ){}
+    constructor(private kmUltimoMantenimiento: number, private fechaUltimoMantenimiento: Date, private alquileresCantidad: number){
+    }
 
     /** Actualiza los kilómetros del último mantenimiento. */
-    public setKmUltimoMant(value: number): void{
-        this.kmUltimoMantenimiento = value;
+    public aumentarKmUltimoMant(value: number): void{
+        this.kmUltimoMantenimiento += value;
     }
     /** Retorna los kilómetros del último mantenimiento. */
     public getKmUltimoMant(): number{
@@ -48,5 +45,11 @@ export default class DatosMantenimiento{
     */
     public calculadoraFecha(): number{
         return moment().diff(this.fechaUltimoMantenimiento, "months");
+    }
+    
+    public reiniciarDatos(): void{
+        this.kmUltimoMantenimiento = 0;
+        this.fechaUltimoMantenimiento = new Date();
+        this.alquileresCantidad = 0;
     }
 }

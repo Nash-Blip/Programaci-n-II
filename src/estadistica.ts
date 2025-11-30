@@ -91,10 +91,9 @@ export default class Estadistica {
      * @param {Map} vehiculos - El mapa con los vehículos
      * @returns {String} porcentaje - El porcentaje de vehículos en alquiler convertido en un string
      */
-    public porcentajeEnAlquiler(vehiculos: Map<number, Vehiculo>): string{
+    public porcentajeEnAlquiler(vehiculos: Map<number, Vehiculo>, totalEnAlquiler: number): string{
         const vehiculosArray = Array.from(vehiculos.values());
         const totalVehiculos = vehiculosArray.length;
-        const totalEnAlquiler = vehiculosArray.filter(v => v["estado"] === EstadoVehiculo.EN_ALQUILER).length;
         
         const porcentajeEnAlquiler = (totalEnAlquiler / totalVehiculos) * 100
         const porcentaje = porcentajeEnAlquiler.toString() + "%"
@@ -109,13 +108,13 @@ export default class Estadistica {
      * @param {Map}vehiculos Es la flota de vehiculos que se pasa desde administracion
      * @returns {string} Retorne el reporte
      */
-    public generarReporte(vehiculos: Map<number, Vehiculo>): string{
+    public generarReporte(vehiculos: Map<number, Vehiculo>, totalEnAlquiler: number): string{
 
         const masAlquilado = this.vehiculoMasAlquilado(vehiculos);
         const menosAlquilado = this.vehiculoMenosAlquilado(vehiculos);
         const masRentable = this.mayorRentabilidad(vehiculos);
         const menosRentable = this.menosRentabilidad(vehiculos);
-        const porcentaje = this.porcentajeEnAlquiler(vehiculos);
+        const porcentaje = this.porcentajeEnAlquiler(vehiculos, totalEnAlquiler);
         return `
         ===== REPORTE DE ESTADISTICAS =====
         Vehiculo mas alquilado: ${masAlquilado.getNumMatricula()}

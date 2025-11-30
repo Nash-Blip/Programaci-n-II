@@ -2,6 +2,8 @@ import {EstadoVehiculo} from "./estadoVehiculo";
 import { Tarifa } from "./Tarifa";
 import DatosMantenimiento from "./datosMantenimiento";
 import DatosEstadistica from "./datosEstadistica";
+import { IEstado } from "./IEstados";
+import EstadoDisponible from "./EstadoDisponible";
 /**
  * Clase abstracta que representa un vehículo dentro del sistema.
  * 
@@ -9,7 +11,7 @@ import DatosEstadistica from "./datosEstadistica";
  */
 export default abstract class Vehiculo{
     private numMatricula: number;
-    private estado: EstadoVehiculo;
+    private estado: IEstado;
     private kilometro: number;
     protected tarifaBase: number;
     protected logicaTarifa: Tarifa;
@@ -25,7 +27,7 @@ export default abstract class Vehiculo{
         this.numMatricula = 0;
         this.kilometro = 0;
         this.tarifaBase = 0;
-        this.estado = EstadoVehiculo.DISPONIBLE;
+        this.estado = new EstadoDisponible(this);
         this.logicaTarifa = undefined as unknown as Tarifa;
         this.datosMantenimiento = new DatosMantenimiento(0, new Date(), 0);
         this.datosEstadistica = new DatosEstadistica();
@@ -59,30 +61,6 @@ export default abstract class Vehiculo{
      */
     public getKilometro(): number {
         return this.kilometro;
-    }
-    /** Cambia el estado del vehículo a DISPONIBLE. */
-    public setEstadoDisponible(): void {
-        this.estado = EstadoVehiculo.DISPONIBLE;
-    }
-    /** Cambia el estado del vehículo a EN_ALQUILER. */
-    public setEstadoEnAlquiler(): void {
-        this.estado = EstadoVehiculo.EN_ALQUILER;
-    }
-    /** Cambia el estado del vehículo a EN_MANTENIMIENTO. */
-    public setEstadoEnMantenimiento(): void {
-        this.estado = EstadoVehiculo.EN_MANTENIMIENTO;
-    }
-    /** Cambia el estado del vehículo a NECESITA_LIMPIEZA. */
-    public setEstadoNecesitaLimpieza(): void {
-        this.estado = EstadoVehiculo.NECESITA_LIMPIEZA;
-    }
-
-    /**
-     * Retorna el estado del vehículo.
-     * @returns {EstadoVehiculo} estado - El estado actual del vehículo.
-     */
-    public getEstado(): EstadoVehiculo {
-        return this.estado;
     }
 
     /**
@@ -145,5 +123,17 @@ export default abstract class Vehiculo{
      */
     public getDatosEstadistica(): DatosEstadistica {
         return this.datosEstadistica;
+    }
+
+    public setEstado(e: IEstado): void{
+        this.estado = e;
+    }
+
+    public alquilar(): boolean{
+        return this.estado.alquilar();
+    }
+
+    public devolver(): void{
+        this.estado.devolver();
     }
 }
